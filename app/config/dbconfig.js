@@ -1,5 +1,7 @@
 /* Load modules */
 let sqlite3 = require('sqlite3').verbose();
+let csv = require('csv');
+let parse = require('csv-parser');
 
 /*
  * Database configuration
@@ -24,6 +26,41 @@ let init = function () {
         " lastName TEXT," +
         " car INT" +
         ")");
+
+    db.run("CREATE TABLE if not exists activites (" +
+        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+        " codeDep TEXT," +
+        " libDep TEXT," +
+        " codeINSEE INT," +
+        " nomCommune TEXT," +
+        " numFiche INT," +
+        " nbIdentique INT," +
+        " activiteCode INT," +
+        " activiteLib TEXT," +
+        " activitePraticable INT," + // TODO : Changer les 0 et 1 en 'non' et 'oui'
+        " activitePratiquee INT," +
+        " salleSpec INT," +
+        " nivActivite TEXT," +
+        " latitude FLOAT," +
+        " longitude FLOAT" +
+        ")");
+
+    // TODO : A finir
+    db.run("CREATE TABLE if not exists installations (" +
+        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+        " codeDep TEXT," +
+        " libDep TEXT," +
+        " codeINSEE INT," +
+        " nomCommune TEXT," +
+        " numInstall INT," +
+        " nomUsuel TEXT," +
+        " numVoie TEXT," +
+        " nomVoie TEXT," +
+        " nomLieuDit TEXT," +
+        " codePostal INT," +
+        " instParticuliere TEXT," +
+        " multiCommune INT" + // Conversion a faire
+        ")")
 };
 
 module.exports = {
