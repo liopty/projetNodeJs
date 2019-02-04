@@ -1,0 +1,6 @@
+/**
+ * Classe activites
+ */
+class activites {
+
+}
