@@ -3,8 +3,8 @@ const express = require('express');
 const router = express.Router();
 
 /* Load controller */
-const activitesController = require('../../controller/activitesController');
-const activitesController = new activitesController();
+const ActivitesController = require('../../controller/ActivitesController');
+const activitesController = new ActivitesController();
 
 /**
  * Exemple route

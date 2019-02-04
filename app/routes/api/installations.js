@@ -3,14 +3,14 @@ const express = require('express');
 const router = express.Router();
 
 /* Load controller */
-//const CarController = require('../../controller/carController');
-//const carController = new CarController();
+const InstallationsController = require('../../controller/InstallationsController');
+const installationsController = new InstallationsController();
 
 /**
- * Car Entity routes
+ * Exemple route
  */
 //router.get('/count', function (req, res) {
-//    carController.countAll(res);
+//    InstallationsController.countAll(res);
 //});
 
-//module.exports = router;
+module.exports = router;
