@@ -45,7 +45,6 @@ let init = function () {
         " longitude FLOAT" +
         ")");
 
-    // TODO : A finir
     db.run("CREATE TABLE if not exists installations (" +
         "id INTEGER PRIMARY KEY AUTOINCREMENT," +
         " codeDep TEXT," +
@@ -59,7 +58,70 @@ let init = function () {
         " nomLieuDit TEXT," +
         " codePostal INT," +
         " instParticuliere TEXT," +
-        " multiCommune INT" + // Conversion a faire
+        " multiCommune INT" + // bool
+        " nbCouvert INT" +
+        " nbLit INT" +
+        " presenceInternat INT" + // bool
+        " amenagementAcessibilite INT" + // bool
+        " accesHandicapMobile INT" + //bool
+        " accesHandicapSens INT " + //bool
+        " placesParking INT" +
+        " placesParkingHandicap INT" +
+        " gardien TEXT" + // indique aussi le logement
+        " emprisefonciere INT" + // m2
+        " desserteMetro INT" + // bool
+        " desserteBus INT" + // bool
+        " desserteTram INT" + // bool
+        " desserteTrain INT" + // bool
+        " desserteBateau INT" + // bool
+        " desserteAutre INT" + // bool
+        " creationFiche TEXT" + // date
+        " majFiche TEXT " + // date
+        " nbFicheEquipement INT" +
+        " nbEquipement INT" +
+        " latitude1 FLOAT," +
+        " longitude1 FLOAT" +
+        " latitude2 FLOAT," +
+        " longitude2 FLOAT" +
+        " latitude FLOAT," +
+        " longitude FLOAT" +
+        ")");
+
+    // Pas complet
+    db.run("CREATE TABLE if not exists equipement (" +
+        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+        " codeDep TEXT," +
+        " libDep TEXT," +
+        " codeINSEE INT," +
+        " nomCommune TEXT," +
+        " numInstall INT," +
+        " nomUsuel TEXT," +
+        " numFicheEquipement INT" +
+        " equipement TEXT" +
+        " batiment TEXT" +
+        " nbEquipementIdentique INT" +
+        " typeEquipementCode INT" + // un code est demandé
+        " typeEquipement TEXT" +
+        " proprietaire TEXT" +
+        " gestionnaire TEXT" +
+        " proprietaireSec TEXT" +
+        " gestionnaireSec TEXT" +
+        " douches INT" +//bool
+        " eclairage INT" + //bool
+        " chapiteau INT" + //bool
+        " etablissementFlottant INT" + //bool
+        " sallePoly INT" + // bool
+        " restaurant INT" + // bool
+        " hotelAltitude INT" + // bool
+        " salleDanseJeux INT " + // bool
+        " etablissementPleinAir INT" + // bool
+        " colo INT"+ // bool
+        " structGonflable INT" + // bool
+        " etablissemntCouvert INT" + // bool
+        " anneeMiseService INT" + // bool
+        " placeTribune INT" +
+        " natureSol TEXT" +
+        " natureEquipement TEXT" +
         ")")
 };
 
