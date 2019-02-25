@@ -1,131 +1,277 @@
 /* Load modules */
 let sqlite3 = require('sqlite3').verbose();
-let csv = require('csv');
-let parse = require('csv-parser');
+const fs = require('fs');
+const csv = require('csv');
+const parse = require('csv-parse');
+const path = require('path');
 
 /*
  * Database configuration
  */
 
 /* Load database file (Creates file if not exists) */
-let db = new sqlite3.Database('./sqlite.db');
+const db = new sqlite3.Database('les_activites_dans_une_commune.db');
+//Activation des contraintes d'intégrté
+db.get("PRAGMA foreign_keys = ON")
 
-/* Init car and driver tables if they don't exist */
-let init = function () {
-    db.run("CREATE TABLE if not exists car (" +
-        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-        " maker TEXT," +
-        " model TEXT," +
-        " year INT," +
-        " driver INT" +
-        ")");
 
-    db.run("CREATE TABLE if not exists driver (" +
-        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-        " firstName TEXT," +
-        " lastName TEXT," +
-        " car INT" +
-        ")");
 
-    db.run("CREATE TABLE if not exists activites (" +
-        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-        " codeDep TEXT," +
-        " libDep TEXT," +
-        " codeINSEE INT," +
-        " nomCommune TEXT," +
-        " numFiche INT," +
-        " nbIdentique INT," +
-        " activiteCode INT," +
-        " activiteLib TEXT," +
-        " activitePraticable INT," + // TODO : Changer les 0 et 1 en 'non' et 'oui'
-        " activitePratiquee INT," +
-        " salleSpec INT," +
-        " nivActivite TEXT," +
-        " latitude FLOAT," +
-        " longitude FLOAT" +
-        ")");
+const createInstallation = function() {
+    return new Promise(function (resolve, reject) {
+        const sqlRequest = "CREATE TABLE IF NOT EXISTS installation (" +
+            "numero_de_l_installation TEXT NOT NULL, " +
+            "nom_usuel_de_l_installation TEXT NOT NULL, " +
+            "code_postal TEXT NOT NULL, " +
+            "nom_de_la_commune TEXT NOT NULL, " +
+            "PRIMARY KEY (numero_de_l_installation))";
 
-    db.run("CREATE TABLE if not exists installations (" +
-        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-        " codeDep TEXT," +
-        " libDep TEXT," +
-        " codeINSEE INT," +
-        " nomCommune TEXT," +
-        " numInstall INT," +
-        " nomUsuel TEXT," +
-        " numVoie TEXT," +
-        " nomVoie TEXT," +
-        " nomLieuDit TEXT," +
-        " codePostal INT," +
-        " instParticuliere TEXT," +
-        " multiCommune INT" + // bool
-        " nbCouvert INT" +
-        " nbLit INT" +
-        " presenceInternat INT" + // bool
-        " amenagementAcessibilite INT" + // bool
-        " accesHandicapMobile INT" + //bool
-        " accesHandicapSens INT " + //bool
-        " placesParking INT" +
-        " placesParkingHandicap INT" +
-        " gardien TEXT" + // indique aussi le logement
-        " emprisefonciere INT" + // m2
-        " desserteMetro INT" + // bool
-        " desserteBus INT" + // bool
-        " desserteTram INT" + // bool
-        " desserteTrain INT" + // bool
-        " desserteBateau INT" + // bool
-        " desserteAutre INT" + // bool
-        " creationFiche TEXT" + // date
-        " majFiche TEXT " + // date
-        " nbFicheEquipement INT" +
-        " nbEquipement INT" +
-        " latitude1 FLOAT," +
-        " longitude1 FLOAT" +
-        " latitude2 FLOAT," +
-        " longitude2 FLOAT" +
-        " latitude FLOAT," +
-        " longitude FLOAT" +
-        ")");
+        db.run(sqlRequest,[], (err) => {
 
-    // Pas complet
-    db.run("CREATE TABLE if not exists equipement (" +
-        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-        " codeDep TEXT," +
-        " libDep TEXT," +
-        " codeINSEE INT," +
-        " nomCommune TEXT," +
-        " numInstall INT," +
-        " nomUsuel TEXT," +
-        " numFicheEquipement INT" +
-        " equipement TEXT" +
-        " batiment TEXT" +
-        " nbEquipementIdentique INT" +
-        " typeEquipementCode INT" + // un code est demandé
-        " typeEquipement TEXT" +
-        " proprietaire TEXT" +
-        " gestionnaire TEXT" +
-        " proprietaireSec TEXT" +
-        " gestionnaireSec TEXT" +
-        " douches INT" +//bool
-        " eclairage INT" + //bool
-        " chapiteau INT" + //bool
-        " etablissementFlottant INT" + //bool
-        " sallePoly INT" + // bool
-        " restaurant INT" + // bool
-        " hotelAltitude INT" + // bool
-        " salleDanseJeux INT " + // bool
-        " etablissementPleinAir INT" + // bool
-        " colo INT"+ // bool
-        " structGonflable INT" + // bool
-        " etablissemntCouvert INT" + // bool
-        " anneeMiseService INT" + // bool
-        " placeTribune INT" +
-        " natureSol TEXT" +
-        " natureEquipement TEXT" +
-        ")")
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            else {
+                console.log("Installation créée");
+                resolve(this);
+            }
+        });
+
+    })
 };
+
+const createEquipement = function() {
+    return new Promise(function (resolve, reject) {
+        const sqlRequest = "CREATE TABLE IF NOT EXISTS equipement (" +
+            "numero_de_la_fiche_equipement TEXT NOT NULL," +
+            "numero_de_l_installation TEXT NOT NULL," +
+            "PRIMARY KEY (numero_de_la_fiche_equipement)," +
+            "FOREIGN KEY (numero_de_l_installation) REFERENCES installation(numero_de_l_installation))";
+
+        db.run(sqlRequest, [], (err) => {
+
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            else {
+                console.log("Equipement créée");
+                resolve(this);
+            }
+
+        });
+
+    });
+};
+const createActivite = function () {
+    return new Promise(function (resolve, reject) {
+        const sqlRequest = "CREATE TABLE IF NOT EXISTS activite (" +
+            "activite_code TEXT NOT NULL," +
+            "activite_libelle TEXT NOT NULL," +
+            "numero_de_la_fiche_equipement TEXT NOT NULL," +
+            "PRIMARY KEY (activite_code, numero_de_la_fiche_equipement)," +
+            "FOREIGN KEY (numero_de_la_fiche_equipement) REFERENCES equipement(numero_de_la_fiche_equipement))";
+        db.run(sqlRequest, [], (err) => {
+
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            else {
+                console.log("Activité créée");
+                resolve(this);
+            }
+        });
+
+    });
+};
+
+const populateInstallation =  function() {
+    return new Promise(function (resolve, reject) {
+        const fileName = 'data/234400034_004-010_fiches-installations-rpdl.csv';
+        const stream = fs.createReadStream(fileName, {encoding: 'utf8'});
+
+
+        const parser = parse({
+            delimiter: ';',
+            columns: header =>
+                header.map( column => column.normalize('NFD').
+                    replace(/[\u0300-\u036f]/g, "").
+                    replace(/[^a-z0-9]/gmi, "_").
+                    replace(/\s+/g, '_').
+                    toLowerCase())
+        });
+
+
+        parser.on('readable', function () {
+            let row;
+
+            while (row = this.read()) {
+                    const sqlRequest = "INSERT OR IGNORE into installation (numero_de_l_installation, nom_usuel_de_l_installation, code_postal, nom_de_la_commune) " +
+                        "VALUES ($noDeLInstallation, $nomUsuelDeLInstallation, $codePostal, $nomDeLaCommune)";
+                    const sqlParams = {
+                        $noDeLInstallation: row.numero_de_l_installation,
+                        $nomUsuelDeLInstallation: row.nom_usuel_de_l_installation,
+                        $codePostal: String(row.code_postal),
+                        $nomDeLaCommune: String(row.nom_de_la_commune)
+
+                    };
+
+
+                    db.run(sqlRequest, sqlParams, function (err) {
+                        if (err)
+                            console.log(err);
+                    });
+
+            }
+        });
+
+
+        stream.pipe(parser);
+
+        parser.on('finish', function ()  {
+            console.log("Installations importées");
+            resolve(this);
+
+        });
+
+        parser.on("error", (err) =>{
+            console.log(err);
+            reject(err);
+        });
+
+    })
+}
+
+const populateEquipement =  function() {
+    return new Promise(function (resolve, reject) {
+        const fileName = 'data/234400034_004-011_fiches-equipements-rpdl.csv';
+        const stream = fs.createReadStream(fileName, {encoding: 'utf8'});
+
+        const parser = parse({
+            delimiter: ';',
+            columns: header =>
+                header.map( column => column.normalize('NFD').
+                replace(/[\u0300-\u036f]/g, "").
+                replace(/[^a-z0-9]/gmi, "_").
+                replace(/\s+/g, '_').
+                toLowerCase())
+        });
+
+        parser.on('readable', function () {
+            let row;
+
+            while (row = this.read()) {
+                const sqlRequest = "INSERT OR IGNORE into equipement (numero_de_la_fiche_equipement, numero_de_l_installation) " +
+                    "VALUES ($numeroDeLaFicheEquipement, $numeroDeLInstallation)";
+                const sqlParams = {
+                    $numeroDeLaFicheEquipement: row.numero_de_la_fiche_equipement,
+                    $numeroDeLInstallation: row.numero_de_l_installation
+
+
+                };
+
+                db.run(sqlRequest, sqlParams, function (err) {
+                    if (err)
+                        console.log(err);
+                });
+            }
+        });
+
+
+        stream.pipe(parser);
+
+        parser.on('finish', function ()  {
+            console.log("Equipements importés");
+            resolve(this);
+
+        });
+
+        parser.on("error", (err) =>{
+            console.log(err);
+            reject(err);
+        });
+
+    })
+}
+
+const populateActivite =  function() {
+    return new Promise(function (resolve, reject) {
+        const fileName = 'data/234400034_004-009_activites-des-fiches-equipements-rpdl.csv';
+        const stream = fs.createReadStream(fileName, {encoding: 'utf8'});
+
+        const parser = parse({
+            delimiter: ';',
+            columns: header =>
+                header.map( column => column.normalize('NFD').
+                replace(/[\u0300-\u036f]/g, "").
+                replace(/[^a-z0-9]/gmi, "_").
+                replace(/\s+/g, '_').
+                toLowerCase())
+        });
+
+        parser.on('readable', function () {
+            let row;
+
+            while (row = this.read()) {
+                const sqlRequest = "INSERT OR IGNORE into activite(activite_code, activite_libelle, numero_de_la_fiche_equipement) " +
+                    "VALUES ($activiteCode, $activiteLibelle, $numeroDeLaFicheEquipement)";
+                const sqlParams = {
+                    $activiteCode: row.activite_code,
+                    $activiteLibelle: row.activite_libelle,
+                    $numeroDeLaFicheEquipement : row.numero_de_la_fiche_equipement
+                };
+
+               //console.log(sqlRequest, sqlParams.$activiteCode, sqlParams.$activiteLibelle, sqlParams.$numeroDeLaFicheEquipement);
+               db.run(sqlRequest, sqlParams, function (err) {
+                    if (err)
+                        console.log(err);
+                });
+            }
+        });
+
+
+        stream.pipe(parser);
+
+        parser.on('finish', function ()  {
+            console.log("Activités importées");
+            resolve(this);
+
+        });
+
+        parser.on("error", (err) =>{
+            console.log(err);
+            reject(err);
+        });
+
+    })
+}
+const init = function() {
+    db.serialize(() => {
+        console.log("Création des tables et importation des données");
+        createInstallation().
+        then(
+            ()=>createEquipement()
+        ).then(
+            ()=>createActivite()
+        ).then(
+            ()=>populateInstallation()
+        ).then(
+            ()=>populateEquipement()
+        ).then(
+            ()=>populateActivite()
+        ).catch((err)=>console.log(err));
+    });
+
+
+};
+/* Init car and driver tables if they don't exist */
+
+
+
 
 module.exports = {
     init: init,
     db: db
 };
+

@@ -39,4 +39,4 @@ class controllerCommon {
     }
 }
 
-module.exports = ControllerCommon;
+module.exports = controllerCommon;

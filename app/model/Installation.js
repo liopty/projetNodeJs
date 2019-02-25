@@ -1,15 +1,15 @@
 /**
- * Car Entity (ES6 Class)
+ * Installation Entity (ES6 Class)
  */
 
-class Installations {
-  /*  constructor(id, maker, model, year, driver) {
-        this.id = id;
-        this.maker = maker;
-        this.model = model;
-        this.year = year;
-        this.driver = driver;
-    }*/
+class Installation {
+    constructor(noDeLInstallation, nomUsuelDeLInstallation, codePostal, nomDeLaCommune) {
+        this.noDeLInstallation= noDeLInstallation;
+        this.nomUsuelDeLInstallation = nomUsuelDeLInstallation;
+        this.codePostal = codePostal;
+        this.nomDeLaCommune =nomDeLaCommune;
+        console.log(this);
+    }
 }
 
-module.exports = Installations;
+module.exports = Installation;

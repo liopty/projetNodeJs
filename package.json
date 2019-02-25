@@ -1,30 +1,21 @@
 {
-  "name": "projetnodejs",
+  "name": "nodejs-rest-api-sqlite",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/liopty/projetNodeJs.git"
-  },
-  "author": "ROBIN Eliott",
+  "description": "POC - NodeJS REST API using SQLite as a database.",
+  "author": "Romuald Tuffreau https://github.com/romwaldtff",
   "dependencies": {
-    "bluebird": "^3.5.3",
-    "body-parser": "^1.18.3",
+    "bluebird": "*",
+    "body-parser": "*",
     "csv": "^5.1.1",
-    "csv-parser": "^2.1.0",
-    "ejs": "^2.6.1",
-    "express": "^4.16.4",
-    "sqlite": "^3.0.1",
-    "sqlite3": "^4.0.6"
+    "csv-parse": "^4.3.1",
+    "ejs": "*",
+    "express": "*",
+    "path": "^0.12.7",
+    "sqlite": "*"
   },
-  "license": "ISC",
+  "license": "LGPL-3.0",
   "bugs": {
-    "url": "https://github.com/liopty/projetNodeJs/issues"
+    "url": "https://github.com/romwaldtff/NodeJS-REST-API-SQLite/issues"
   },
-  "homepage": "https://github.com/liopty/projetNodeJs#readme",
-  "devDependencies": {}
+  "repository": "https://github.com/romwaldtff/NodeJS-REST-API-SQLite"
 }

@@ -1,15 +1,12 @@
 /**
- * Car Entity (ES6 Class)
+ * Equipement Entity (ES6 Class)
  */
 
-class Equipements {
-  /*  constructor(id, maker, model, year, driver) {
-        this.id = id;
-        this.maker = maker;
-        this.model = model;
-        this.year = year;
-        this.driver = driver;
-    }*/
+class Equipement {
+    constructor(numeroDeLaFicheEquipement, installation) {
+        this.numeroDeLaFicheEquipement =  numeroDeLaFicheEquipement;
+        this.installation = installation;
+    }
 }
 
-module.exports = Equipements;
+module.exports = Equipement;
