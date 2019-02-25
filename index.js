@@ -11,7 +11,7 @@ const bodyParser = require("body-parser");
 const database = require('./app/config/dbconfig');
 
 /* Init database */
-database.init();
+//database.init();
 
 /* Init server listening */
 const port = process.argv[2] || 3000;

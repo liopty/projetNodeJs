@@ -7,7 +7,7 @@ class Installation {
         this.noDeLInstallation= noDeLInstallation;
         this.nomUsuelDeLInstallation = nomUsuelDeLInstallation;
         this.codePostal = codePostal;
-        this.nomDeLaCommune =nomDeLaCommune;
+        this.nomDeLaCommune = nomDeLaCommune;
         console.log(this);
     }
 }
