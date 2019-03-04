@@ -15,7 +15,21 @@ class ActiviteDao {
         this.common = new daoCommon();
     }
 
+    findAll() {
+        const sqlRequest = "SELECT * FROM activite";
 
+        return this.common.findAll(sqlRequest).then( rows => {
+
+            let activites = [];
+
+            for (const row of rows) {
+                activites.push(new Activite(row.activite_code, row.activite_libelle, row.numero_de_la_fiche_equipement));
+            }
+
+            return activites;
+        })
+
+    }
 
     findByCodePostal(codePostal){
         const sqlRequest = "select activite.activite_code, activite.activite_libelle, " +
@@ -47,7 +61,9 @@ class ActiviteDao {
             return activites;
         });
 
-    }
+    };
+
+
 
 
 

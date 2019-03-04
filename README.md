@@ -9,6 +9,10 @@ The code is written in ES6 and uses Promises.
 1. Clone this repository : `git clone https://github.com/romwaldtff/NodeJS-REST-API-SQLite.git`  
 2. Then install its dependencies : `npm install`
 
+## Fonctionnalités attendues
+-   A partir d'une activité afficher les lieux de pratique et modalités d'accès.
+-   
+
 ## Requirements :
 
 - [Git](https://git-scm.com/) if you want to clone this repository.

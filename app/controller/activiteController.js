@@ -14,11 +14,15 @@ class ActiviteController {
         this.common = new ControllerCommon();
     }
 
-
-
     findByCodePostal(req,res){
         const codePostal = req.params.code_postal;
         this.activiteDao.findByCodePostal(codePostal)
+            .then(this.common.findSuccess(res))
+            .catch(this.common.findError(res));
+    }
+
+    findAll(res) {
+        this.activiteDao.findAll()
             .then(this.common.findSuccess(res))
             .catch(this.common.findError(res));
     }

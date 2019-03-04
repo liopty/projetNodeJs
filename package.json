@@ -6,10 +6,12 @@
   "dependencies": {
     "bluebird": "*",
     "body-parser": "*",
+    "bootstrap": "^4.3.1",
     "csv": "^5.1.1",
     "csv-parse": "^4.3.1",
     "ejs": "*",
     "express": "*",
+    "jquery": "^3.3.1",
     "path": "^0.12.7",
     "sqlite": "*",
     "sqlite3": "^4.0.6"
