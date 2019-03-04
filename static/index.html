@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Projet Node Js</title>
+    <link href="assets/vendor/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/tuto.css" rel="stylesheet">
+
+</head>
+<body>
+
+<script src="assets/vendor/jquery/jquery.slim.js"></script>
+<script src="assets/vendor/bootstrap/dist/js/bootstrap.js"></script>
+
+<div class="container">
+    <!--
+    <div class="col-lg-4">Colonne 4</div>
+    <input type="button" onclick=window.location.href='http://localhost:3000/api/installation' name="test"/>
+    <input type="button" onclick="MyFunction_test()"/>-->
+
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Home</a>
+            <a class="nav-item nav-link" id="nav-activites-tab" data-toggle="tab" href="#nav-activites" role="tab" aria-controls="nav-activites" aria-selected="false">Activites</a>
+            <a class="nav-item nav-link" id="nav-equipement-tab" data-toggle="tab" href="#nav-equipement" role="tab" aria-controls="nav-equipement" aria-selected="false">Equipement</a>
+            <a class="nav-item nav-link" id="nav-installation-tab" data-toggle="tab" href="#nav-installation" role="tab" aria-controls="nav-installation" aria-selected="false">Equipement</a>
+
+        </div>
+    </nav>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <h3>Filtres</h3>
+        </div>
+
+        <div class="tab-content col-lg-8" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <h3>Home</h3>
+            </div>
+
+            <div class="tab-pane fade" id="nav-activites" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <h3>Activites</h3>
+            </div>
+
+            <div class="tab-pane fade" id="nav-equipement" role="tabpanel" aria-labelledby="nav-equipement-tab">
+                <h3>Equipement</h3>
+            </div>
+
+            <div class="tab-pane fade" id="nav-installation" role="tabpanel" aria-labelledby="nav-installation-tab">
+                <h3>Installations</h3>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    function MyFunction_test(){
+        parent.location.hash = "installation";
+    }
+</script>
+
+</body>
+</html>
