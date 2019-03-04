@@ -45,6 +45,7 @@ class ActiviteDao {
          };
 
 
+
         return this.common.findAllWithParams(sqlRequest, sqlParams).then(rows => {
 
             let activites = [];
