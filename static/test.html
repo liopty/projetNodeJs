@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Projet Node Js</title>
+    <link href="assets/vendor/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+</head>
+<body>
+
+<script src="assets/vendor/jquery/jquery.slim.js"></script>
+<script src="assets/vendor/bootstrap/dist/js/bootstrap.js"></script>
+
+<div class="container">
+    <div class="col-lg-4">Colonne 4</div>
+    <input type="button" onclick=window.location.href='http://localhost:3000/api/installation' name="test"/>
+    <input type="button" onclick="MyFunction_test()"/>
+</div>
+
+
+<script>
+function MyFunction_test(){
+    parent.location.hash = "installation";
+    fetch('https://localhost:3000/api/installation')
+    .then(res => res.json())
+    .then(json => console.log(json));
+}
+
+</script>
+
+</body>
+</html>
