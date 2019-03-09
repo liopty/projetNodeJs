@@ -11,29 +11,54 @@
 
 <script src="assets/vendor/jquery/jquery.slim.js"></script>
 <script src="assets/vendor/bootstrap/dist/js/bootstrap.js"></script>
+<script src="assets/vendor/Vue.js/vue.js"></script>
 
-<div class="container">
+<!--
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <router-link  to="/home" class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Home</router-link>
+        <router-link to="/activites" class="nav-item nav-link" id="nav-activites-tab" data-toggle="tab" href="#nav-activites" role="tab" aria-controls="nav-activites" aria-selected="false">Activites</router-link>
+        <router-link to="/equipement" class="nav-item nav-link" id="nav-equipement-tab" data-toggle="tab" href="#nav-equipement" role="tab" aria-controls="nav-equipement" aria-selected="false">Equipement</router-link>
+        <router-link to="/installation" class="nav-item nav-link" id="nav-installation-tab" data-toggle="tab" href="#nav-installation" role="tab" aria-controls="nav-installation" aria-selected="false">Equipement</router-link>
+    </div>
+</nav>-->
+
+<div class="container" id="app">
     <!--
     <div class="col-lg-4">Colonne 4</div>
     <input type="button" onclick=window.location.href='http://localhost:3000/api/installation' name="test"/>
     <input type="button" onclick="MyFunction_test()"/>-->
 
-    <nav>
-        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Home</a>
-            <a class="nav-item nav-link" id="nav-activites-tab" data-toggle="tab" href="#nav-activites" role="tab" aria-controls="nav-activites" aria-selected="false">Activites</a>
-            <a class="nav-item nav-link" id="nav-equipement-tab" data-toggle="tab" href="#nav-equipement" role="tab" aria-controls="nav-equipement" aria-selected="false">Equipement</a>
-            <a class="nav-item nav-link" id="nav-installation-tab" data-toggle="tab" href="#nav-installation" role="tab" aria-controls="nav-installation" aria-selected="false">Equipement</a>
 
-        </div>
-    </nav>
 
     <div class="row">
         <div class="col-lg-4">
             <h3>Filtres</h3>
+
+            <!-- Code Postal-->
+            <div class="row">
+                <div class="col-lg-6">
+                    <h4>Code Postal :</h4>
+                </div>
+                <div class="col-lg-6">
+                    <!-- On met un listener sur cette input -->
+                    <input type="text" v-model="codePostal" list="codesPostaux" v-on:input="codePostalChanged">
+                    <!-- Les codesPostaux disponibles s'affichent -->
+                    <datalist id="codePostaux">
+                        <option v-for="codePostal in codesPostaux">
+                            {{codePostal}}
+                        </option>
+                    </datalist>
+                </div>
+
+            </div>
+
+
         </div>
 
-        <div class="tab-content col-lg-8" id="nav-tabContent">
+        <router-view class="col-lg-8"></router-view>
+
+        <!--<div class="tab-content col-lg-8" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                 <h3>Home</h3>
             </div>
@@ -50,7 +75,7 @@
                 <h3>Installations</h3>
             </div>
 
-        </div>
+        </div>-->
     </div>
 
 
