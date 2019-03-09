@@ -11,14 +11,11 @@ const activiteController = new ActiviteController();
  */
 
 router.get('/code_postal/:code_postal', function (req, res) {
-    activiteController.findByCodePostal(req,res);
+    activiteController.findByCodePostal(req, res);
 });
 
 router.get('/', function (req, res) {
     activiteController.findAll(res);
 });
-
-
-
 
 module.exports = router;

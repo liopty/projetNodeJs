@@ -15,8 +15,7 @@ class EquipementController {
     }
 
 
-
-    findByNoDeLInstallation(req,res){
+    findByNoDeLInstallation(req, res) {
         const noDeLInstallation = req.params.no_de_l_installation;
         this.equipementDao.findByNoDeLInstallation(noDeLInstallation)
             .then(this.common.findSuccess(res))
