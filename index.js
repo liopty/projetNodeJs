@@ -2,6 +2,7 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const fetch = require('node-fetch');
 
 /* BJF Current PATH */
 //const path = require('path');
@@ -27,6 +28,7 @@ app.use(bodyParser.json());
 const REST_API_ROOT = '/api';
 app.use(REST_API_ROOT, require('./app/routes/router'));
 
-app.use('/static', express.static('static'));
+app.use('/', express.static('static'));
+
 
 
