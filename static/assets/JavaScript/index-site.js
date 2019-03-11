@@ -49,22 +49,27 @@ class NotreModele {
      * @return {Promise<any>}
      */
     selectCodePostal(codePostal) {
+
         return new Promise((resolve, reject) => {
             fetch(urlActivite + codePostal).then((response) => {
+
                 return response.json();
             })
                 .then((data) => {
+
                     this.activites = data;
                     resolve(this.activites);
                 }).catch(() => {
+                console.log("reject");
                 this.activites = [];
                 this.activiteSelectionnee = null;
-                resolve(this.installations);
+                reject(this.activites);
             });
         });
     }
 
     getActivitesLibelles() {
+        //console.log(this.activites);
         return [...new Set(this.activites.map(function (element) {
             return element.activiteLibelle;
         }))].sort();
@@ -78,6 +83,8 @@ class NotreModele {
 }
 
 const notreModele = new NotreModele();
+
+//notreModele.selectCodePostal("44460").then(() => console.log(notreModele.getActivitesLibelles()));
 const app = new Vue({
     el: '#app',
     data() {
@@ -90,12 +97,13 @@ const app = new Vue({
     },
 
     created() {
-        notreModele.getInstallations().then(() => this.codePostaux = notreModele.getCodePostaux());
+        notreModele.getInstallations().then(() => this.codesPostaux = notreModele.getCodePostaux());
     },
 
     methods: {
         codePostalChanged: function (e) {
-            notreModele.selectCodePostal(this.codePostal).then(()=> this.activiteLibelle = notreModele.getActivitesLibelles());
+
+            notreModele.selectCodePostal(this.codePostal).then(() => this.activitesLibelles = notreModele.getActivitesLibelles());
         },
         selectActivite: function (activiteLibelle) {
             this.nomsUsuelsInstallations = notreModele.getNomUsuelInstallationByActiviteLibelle(activiteLibelle);
