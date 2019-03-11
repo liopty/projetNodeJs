@@ -27,17 +27,17 @@ class NotreModele {
                 .then((data) => {
                     this.installations = data; // On remplit installations par les données récupérée
                     resolve(this.installations)
-                }).catch(() => {
-                this.installations = [];
-                this.codePostalChoisi = null;
-                reject(this.installations);
-            });
+                })
+                .catch(() => {
+                    this.installations = [];
+                    this.codePostalChoisi = null;
+                    reject(this.installations);
+                });
         });
     }
 
     /**
      * Recupère les codes postes
-     * @return {this}
      */
     getCodePostaux() {
         return [...new Set(this.installations.map(element => element.codePostal))].sort();
@@ -60,7 +60,6 @@ class NotreModele {
                     this.activites = data;
                     resolve(this.activites);
                 }).catch(() => {
-                console.log("reject");
                 this.activites = [];
                 this.activiteSelectionnee = null;
                 reject(this.activites);
@@ -69,7 +68,6 @@ class NotreModele {
     }
 
     getActivitesLibelles() {
-        //console.log(this.activites);
         return [...new Set(this.activites.map(function (element) {
             return element.activiteLibelle;
         }))].sort();
@@ -107,7 +105,6 @@ const app = new Vue({
         },
         selectActivite: function (activiteLibelle) {
             this.nomsUsuelsInstallations = notreModele.getNomUsuelInstallationByActiviteLibelle(activiteLibelle);
-            console.log(this.nomsUsuelsInstallations);
         }
     }
 
