@@ -114,12 +114,10 @@ const app = new Vue({
 
     methods: {
         codePostalChanged: function (e) {
-
             notreModele.selectCodePostal(this.codePostal).then(() => this.activitesLibelles = notreModele.getActivitesLibelles());
         },
         selectActivite: function (activiteLibelle) {
             this.nomsUsuelsInstallations = notreModele.getNomUsuelInstallationByActiviteLibelle(activiteLibelle);
         }
     }
-
 });

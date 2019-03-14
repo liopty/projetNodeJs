@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Projet Node Js</title>
@@ -54,8 +54,11 @@
                 <div class="row mx-auto collapse multi-collapse" id="communeForm">
                     <ul>
                         <!--<label for="nomCommune">Exemple Commune </label><input id="nomCommune" type="checkbox">-->
+
+
                         <li v-for="nomCommune in nomsCommunes">
-                            {{nomCommune}}
+                            <label v-bind:for="nomCommune">{{nomCommune}}</label>
+                            <input v-bind:id=nomCommune type="checkbox">
                         </li>
                     </ul>
                 </div>
