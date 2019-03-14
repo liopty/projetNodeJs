@@ -16,7 +16,7 @@ class NotreModele {
     }
 
     /**
-     * Getter de l'installation
+     * Getter des installations
      * @return {Promise<any>}
      */
     getInstallations() {
@@ -44,7 +44,7 @@ class NotreModele {
     }
 
     /**
-     * Selection du codePostal
+     * Selection du codePostal et affichage des activités disponibles dans ce code postal
      * @param codePostal
      * @return {Promise<any>}
      */
@@ -78,6 +78,13 @@ class NotreModele {
         installations = [...new Set(installations)].sort();
         return installations;
     }
+
+    /**
+     * Getter des noms de communes.
+     */
+    getNomsCommunes() {
+        return [...new Set(this.installations.map(element => element.nomDeLaCommune))].sort();
+    }
 }
 
 const notreModele = new NotreModele();
@@ -87,15 +94,22 @@ const app = new Vue({
     el: '#app',
     data() {
         return {
+            // Code postal
             codePostal: '',
-            codesPostaux: [],
+            codesPostaux: [], // On remplit une liste des codes postaux stockés dans cet array
             activitesLibelles: [],
             nomsUsuelsInstallations: [],
+
+            // Noms Communes
+            nomsCommunes: []
         }
     },
 
+    // Fonction appelée une fois l'instance crée
     created() {
-        notreModele.getInstallations().then(() => this.codesPostaux = notreModele.getCodePostaux());
+        notreModele.getInstallations()
+            .then(() => this.codesPostaux = notreModele.getCodePostaux())
+            .then(()=> this.nomsCommunes = notreModele.getNomsCommunes());
     },
 
     methods: {
