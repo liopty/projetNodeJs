@@ -18,21 +18,14 @@
 
             <!-- Les filtres a appliquer -->
             <div class="col-4">
-
                 <h1 class="row mx-auto"> Filtres </h1>
-
-
                 <!--Liste des filtres avec des collapse-->
-
-
                 <!-- Filtre Code postal -->
                 <button class="btn btn-primary" data-toggle="collapse" href="#codePostalForm" role="button"
                         aria-expanded="false" aria-controls="codePostalForm">
                     Code Postal
                 </button>
-
                 <div class="row mx-auto collapse multi-collapse" id="codePostalForm">
-
                     <!--On apelle codePostalChanged quand on modifie l'input-->
                     <input class="mx-auto" id="codePostal" type="text" v-model="codePostal" list="codesPostaux"
                            v-on:input="codePostalChanged">
@@ -41,35 +34,25 @@
                             {{codePostal}}
                         </option>
                     </datalist>
-
                 </div>
-
-
                 <!-- Filtre Nom Commune -->
                 <button class="btn btn-primary" data-toggle="collapse" href="#communeForm" role="button"
                         aria-expanded="false" aria-controls="communeForm">
                     Nom de Commune
                 </button>
-
                 <div class="row mx-auto collapse multi-collapse" id="communeForm">
                     <ul>
-                        <!--<label for="nomCommune">Exemple Commune </label><input id="nomCommune" type="checkbox">-->
-
-
                         <li v-for="nomCommune in nomsCommunes">
                             <label v-bind:for="nomCommune">{{nomCommune}}</label>
                             <input v-bind:id=nomCommune type="checkbox">
                         </li>
                     </ul>
                 </div>
-
             </div>
 
             <!-- Le résultat de la requete-->
             <div class="col-8">
-
                 <h1 class="row mx-auto"> Résultat </h1>
-
                 <ul>
                     <li class="row" v-for="activiteLibelle in activitesLibelles"
                         v-on:click="selectActivite(activiteLibelle)">
@@ -81,17 +64,17 @@
 
 
         <div class="row">
-            <div class="col-12">
-                <h1 class="mx-auto row">Info</h1>
-                <div class="row">
-                    <ul>
-                        <li class="row" v-for="nomUsuelInstallation in nomsUsuelsInstallations">
-                            {{nomUsuelInstallation}}
-                        </li>
-                    </ul>
 
-                </div>
+            <div class="col-12">
+                <h1 class="row">Info</h1>
+                <ul>
+                    <li class="row" v-for="nomUsuelInstallation in nomsUsuelsInstallations">
+                        {{nomUsuelInstallation}}
+                    </li>
+                </ul>
             </div>
+
+
         </div>
 
     </div>
