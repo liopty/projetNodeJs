@@ -27,6 +27,8 @@
                 </button>
                 <div class="row mx-auto collapse multi-collapse" id="codePostalForm">
                     <!--On apelle codePostalChanged quand on modifie l'input-->
+
+                    <!-- TODO : TRANSFORMER LE CHOIX CODE POSTAL UNIQUE EN UNE LISTE DE CODES POSTAUX EN CHECKBOX -->
                     <input class="mx-auto" id="codePostal" type="text" v-model="codePostal" list="codesPostaux"
                            v-on:input="codePostalChanged">
                     <datalist id="codesPostaux">

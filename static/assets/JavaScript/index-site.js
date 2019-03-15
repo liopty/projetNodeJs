@@ -45,18 +45,16 @@ class NotreModele {
 
     /**
      * Selection du codePostal et affichage des activités disponibles dans ce code postal
+     * TODO : FAIRE MARCHER CA POUR PLUSIEURS CODES POSTAUX EN MEME TEMPS
      * @param codePostal
      * @return {Promise<any>}
      */
     selectCodePostal(codePostal) {
-
         return new Promise((resolve, reject) => {
             fetch(urlActivite + codePostal).then((response) => {
-
                 return response.json();
             })
                 .then((data) => {
-
                     this.activites = data;
                     resolve(this.activites);
                 }).catch(() => {
@@ -85,6 +83,14 @@ class NotreModele {
     getNomsCommunes() {
         return [...new Set(this.installations.map(element => element.nomDeLaCommune))].sort();
     }
+
+    /**
+     * On récupère toutes les activités qui sont disponibles dans une commune précise
+     * @param nomCommune Nom de la commune ou on fait la requete.
+     */
+    selectNomsCommunes(nomCommune) {
+
+    }
 }
 
 const notreModele = new NotreModele();
@@ -109,7 +115,7 @@ const app = new Vue({
     created() {
         notreModele.getInstallations()
             .then(() => this.codesPostaux = notreModele.getCodePostaux())
-            .then(()=> this.nomsCommunes = notreModele.getNomsCommunes());
+            .then(() => this.nomsCommunes = notreModele.getNomsCommunes());
     },
 
     methods: {
