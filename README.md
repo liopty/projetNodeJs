@@ -1,4 +1,6 @@
-# NodeJS REST API SQLite
+# Projet de Technologies pour la Production d'Applications
+
+Ce projet permet l'implémentation d'une API NodeJS REST
 
 This project is a proof of concept (POC).  
 It's purpose is to demonstrate an implementation of a NodeJS REST API using SQLite as a database (sqlite.db).   

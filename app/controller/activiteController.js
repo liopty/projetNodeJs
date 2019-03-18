@@ -24,6 +24,19 @@ class ActiviteController {
             .then(this.common.findSuccess(res))
             .catch(this.common.findError(res));
     }
+
+    /**
+     * Permet de recuperer des activités avec le nom de la commune recuperee depuis l'url
+     * @param req
+     * @param res
+     */
+    findByNomCommune(req, res) {
+        const nomCommune  = req.params.nom_de_la_commune;
+        //console.log(nomCommune);
+        this.activiteDao.findByNomCommune(nomCommune)
+            .then(this.common.findSuccess(res))
+            .catch(this.common.findError(res));
+    }
 }
 
 module.exports = ActiviteController;

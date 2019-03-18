@@ -1,5 +1,7 @@
 const urlCodePostalTous = 'http://localhost:3000/api/installation/';
-const urlActivite = 'http://localhost:3000/api/activite/code_postal/';
+const urlActiviteCodePostal = 'http://localhost:3000/api/activite/code_postal/';
+const urlActiviteNomCommune = 'http://localhost:3000/api/activite/nom_de_la_commune/';
+
 
 class NotreModele {
     /**
@@ -51,7 +53,7 @@ class NotreModele {
      */
     selectCodePostal(codePostal) {
         return new Promise((resolve, reject) => {
-            fetch(urlActivite + codePostal).then((response) => {
+            fetch(urlActiviteCodePostal + codePostal).then((response) => {
                 return response.json();
             })
                 .then((data) => {
@@ -89,7 +91,9 @@ class NotreModele {
      * @param nomCommune Nom de la commune ou on fait la requete.
      */
     selectNomsCommunes(nomCommune) {
-
+        return new Promise((resolve, reject) => {
+            fetch()
+        })
     }
 }
 

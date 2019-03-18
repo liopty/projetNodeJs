@@ -13,8 +13,6 @@ class InstallationDao {
         this.common = new daoCommon();
     }
 
-
-
     /**
      * Finds all entities.
      * @return all entities
