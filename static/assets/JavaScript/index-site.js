@@ -136,12 +136,10 @@ const app = new Vue({
             notreModele.selectCodePostal(this.codePostal).then(() => this.activitesLibelles = notreModele.getActivitesLibelles());
         },
         nomCommuneChanged : function(e) {
-            this.nomsCommunesChecked.forEach(function (element) {
-                console.log(element);
+            this.nomsCommuneChecked.forEach(function (element) {
+                notreModele.selectNomsCommunes(element).then(() => this.activitesLibelles = notreModele.getActivitesLibelles());
             });
-            notreModele.selectNomsCommunes()
         },
-
         selectActivite: function (activiteLibelle) {
             this.nomsUsuelsInstallations = notreModele.getNomUsuelInstallationByActiviteLibelle(activiteLibelle);
         }
