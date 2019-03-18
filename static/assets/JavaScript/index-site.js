@@ -92,8 +92,18 @@ class NotreModele {
      */
     selectNomsCommunes(nomCommune) {
         return new Promise((resolve, reject) => {
-            fetch()
-        })
+            fetch(urlActiviteNomCommune+nomCommune).then((response) => {
+                return response.json();
+            })
+                .then((data) => {
+                    this.activites = data;
+                    resolve(this.activites);
+                }).catch(() => {
+                    this.activites = [];
+                    this.activiteSelectionnee = null;
+                    reject(this.activites);
+            });
+        });
     }
 }
 
@@ -109,9 +119,8 @@ const app = new Vue({
             codesPostaux: [], // On remplit une liste des codes postaux stockés dans cet array
             activitesLibelles: [],
             nomsUsuelsInstallations: [],
-
-            // Noms Communes
-            nomsCommunes: []
+            nomsCommunes: [], // Afficher les noms des communes dans une liste de checkbox
+            nomsCommuneChecked : [] // Noms Communes Selectionées
         }
     },
 
@@ -126,6 +135,13 @@ const app = new Vue({
         codePostalChanged: function (e) {
             notreModele.selectCodePostal(this.codePostal).then(() => this.activitesLibelles = notreModele.getActivitesLibelles());
         },
+        nomCommuneChanged : function(e) {
+            this.nomsCommunesChecked.forEach(function (element) {
+                console.log(element);
+            });
+            notreModele.selectNomsCommunes()
+        },
+
         selectActivite: function (activiteLibelle) {
             this.nomsUsuelsInstallations = notreModele.getNomUsuelInstallationByActiviteLibelle(activiteLibelle);
         }

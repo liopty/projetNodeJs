@@ -41,6 +41,8 @@ class ActiviteDao {
      * @return {Promise<Array | never>}
      */
     findByCodePostal(codePostal) {
+        let parametresMultiples = '';
+
         const sqlRequest = "select activite.activite_code, activite.activite_libelle, " +
             "equipement.numero_de_la_fiche_equipement," +
             "installation.numero_de_l_installation, installation.nom_usuel_de_l_installation, installation.nom_de_la_commune, installation.code_postal " +
