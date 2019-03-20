@@ -8,7 +8,7 @@ class Installation {
         this.nomUsuelDeLInstallation = nomUsuelDeLInstallation;
         this.codePostal = codePostal;
         this.nomDeLaCommune = nomDeLaCommune;
-       // console.log(this);
+       // console.log(this); IKFQNK<NJ.K<NFKQJNSKJFNKJSWDNFKJNJDSKNFDKSQNLKFHSQLIUHFLIUHREIUREQSQFEQKNFJFQJFNJFDQJ
     }
 }
 

@@ -113,7 +113,7 @@ class NotreModele {
      * @return {Promise<any>}
      */
     setActivitesLibellesForNomsUsuels(activiteLibelle) {
-        return new Promise((resolve, reject) => {
+        const recup = new Promise((resolve, reject) => {
             activiteLibelle = activiteLibelle.trim();
             fetch(urlInstallationActiviteLibelle + activiteLibelle).then((response) => {
                 return response.json();
@@ -125,16 +125,11 @@ class NotreModele {
                 this.installations = [];
                 reject(this.installations);
             });
-        })
+        });
+        console.log([...new Set(this.installations.map(element => element.nomUsuelDeLInstallation))].sort());
+        return [...new Set(this.installations.map(element => element.nomUsuelDeLInstallation))].sort();
     }
 
-    /**
-     * Affiche les noms usuels que l'on a recuperé depuis setActivitesLibellesForNomsUsuels
-     *
-     */
-    getNomsUsuels() {
-        return [...new Set(this.installations.map(element => element.nomDeLaCommune))].sort();
-    }
 }
 
 const notreModele = new NotreModele();
@@ -186,8 +181,7 @@ const app = new Vue({
         },
         selectActivite: function (activiteLibelle) {
             //this.nomsUsuelsInstallations = notreModele.getNomUsuelInstallationByActiviteLibelle(activiteLibelle);
-            this.nomsUsuelsInstallations = notreModele.setActivitesLibellesForNomsUsuels(activiteLibelle);
-            console.log(this.nomsUsuelsInstallations);
+            this.nomsUsuelsInstallations=notreModele.setActivitesLibellesForNomsUsuels(activiteLibelle);
         }
     }
 });
