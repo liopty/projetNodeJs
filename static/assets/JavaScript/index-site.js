@@ -92,16 +92,16 @@ class NotreModele {
      */
     selectNomsCommunes(nomCommune) {
         return new Promise((resolve, reject) => {
-            fetch(urlActiviteNomCommune+nomCommune).then((response) => {
+            fetch(urlActiviteNomCommune + nomCommune).then((response) => {
                 return response.json();
             })
                 .then((data) => {
                     this.activites = data;
                     resolve(this.activites);
                 }).catch(() => {
-                    this.activites = [];
-                    this.activiteSelectionnee = null;
-                    reject(this.activites);
+                this.activites = [];
+                this.activiteSelectionnee = null;
+                reject(this.activites);
             });
         });
     }
@@ -117,10 +117,12 @@ const app = new Vue({
             // Code postal
             codePostal: '',
             codesPostaux: [], // On remplit une liste des codes postaux stockés dans cet array
+            codesPostauxChecked: [],
             activitesLibelles: [],
+
             nomsUsuelsInstallations: [],
             nomsCommunes: [], // Afficher les noms des communes dans une liste de checkbox
-            nomsCommuneChecked : [] // Noms Communes Selectionées
+            nomsCommuneChecked: [] // Noms Communes Selectionées
         }
     },
 
@@ -134,10 +136,18 @@ const app = new Vue({
     methods: {
         codePostalChanged: function (e) {
             notreModele.selectCodePostal(this.codePostal).then(() => this.activitesLibelles = notreModele.getActivitesLibelles());
+
+
         },
-        nomCommuneChanged : function(e) {
-            this.nomsCommuneChecked.forEach(function (element) {
-                notreModele.selectNomsCommunes(element).then(() => this.activitesLibelles = notreModele.getActivitesLibelles());
+        nomCommuneChanged: function (e) {
+            let activitesLibellesSet = new Set();
+            this.nomsCommuneChecked.forEach((element) => {
+                notreModele.selectNomsCommunes(element)
+                    .then(() => notreModele.getActivitesLibelles()
+                        .forEach((element2) => {
+                            activitesLibellesSet.add(element2);
+                        }))
+                    .then(() => this.activitesLibelles = Array.from(activitesLibellesSet))
             });
         },
         selectActivite: function (activiteLibelle) {

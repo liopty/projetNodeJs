@@ -11,13 +11,12 @@
 </head>
 <body>
 
-<div id="app"><!---->
-    <div class="container">
+<div id="app">
 
+    <div class="container-fluid">
         <div class="row">
-
             <!-- Les filtres a appliquer -->
-            <div class="col-4">
+            <div class="col-3">
                 <h1 class="row mx-auto"> Filtres </h1>
                 <!--Liste des filtres avec des collapse-->
 
@@ -30,35 +29,44 @@
                     <!--On apelle codePostalChanged quand on modifie l'input-->
 
                     <!-- TODO : TRANSFORMER LE CHOIX CODE POSTAL UNIQUE EN UNE LISTE DE CODES POSTAUX EN CHECKBOX -->
-                    <input class="mx-auto" id="codePostal" type="text" v-model="codePostal" list="codesPostaux"
+                    <!--
+                    <input id="codePostal" type="text" v-model="codePostal" list="codesPostaux"
                            v-on:input="codePostalChanged">
                     <datalist id="codesPostaux">
                         <option v-for="codePostal in codesPostaux">
                             {{codePostal}}
                         </option>
                     </datalist>
+                    -->
+
+                    <ul>
+                        <li v-for="codePostal in codesPostaux">
+                            <label v-bind:for="codePostal">{{codePostal}}</label>
+                            <input v-on:keyup.enter="codePostalChanged" v-bind:value=codePostal v-bind:id=codePostal
+                                   v-model="codesPostauxChecked" type="checkbox">
+                        </li>
+                    </ul>
                 </div>
+
                 <!-- Filtre Nom Commune -->
                 <button class="btn btn-primary" data-toggle="collapse" href="#communeForm" role="button"
                         aria-expanded="false" aria-controls="communeForm">
                     Nom de Commune
                 </button>
                 <div class="row mx-auto collapse multi-collapse" id="communeForm">
-
                     <ul>
                         <li v-for="nomCommune in nomsCommunes">
                             <label v-bind:for="nomCommune">{{nomCommune}}</label>
-                            <input v-on:click="nomCommuneChanged" v-bind:value=nomCommune v-bind:id=nomCommune v-model=nomsCommuneChecked type="checkbox">
+                            <input v-on:keyup.tab="nomCommuneChanged" v-bind:value=nomCommune v-bind:id=nomCommune
+                                   v-model=nomsCommuneChecked type="checkbox">
                         </li>
                     </ul>
                     <span>Noms cochés : {{ nomsCommuneChecked }}</span>
-
-
                 </div>
             </div>
 
             <!-- Le résultat de la requete-->
-            <div class="col-8">
+            <div class="col-6">
                 <h1 class="row mx-auto"> Résultat </h1>
                 <ul>
                     <li class="row" v-for="activiteLibelle in activitesLibelles"
@@ -67,12 +75,8 @@
                     </li>
                 </ul>
             </div>
-        </div>
 
-
-        <div class="row">
-
-            <div class="col-12">
+            <div class="col-3">
                 <h1 class="row">Info</h1>
                 <ul>
                     <li class="row" v-for="nomUsuelInstallation in nomsUsuelsInstallations">
@@ -81,8 +85,9 @@
                 </ul>
             </div>
 
-
         </div>
+
+
 
     </div>
 
