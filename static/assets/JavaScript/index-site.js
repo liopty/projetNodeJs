@@ -144,7 +144,7 @@ const app = new Vue({
             console.log("CHANGE");
             let activitesLibellesSet = new Set();
             console.log(this.nomsCommuneChecked);
-            setTimeout((){
+            setTimeout(()=>{
                 this.nomsCommuneChecked.forEach((element) => {
                     notreModele.selectNomsCommunes(element)
                     .then(() => notreModele.getActivitesLibelles()
