@@ -57,11 +57,11 @@
                     <ul>
                         <li v-for="nomCommune in nomsCommunes">
                             <label v-bind:for="nomCommune">{{nomCommune}}</label>
-                            <input v-on:keyup.tab="nomCommuneChanged" v-bind:value=nomCommune v-bind:id=nomCommune
-                                   v-model=nomsCommuneChecked type="checkbox">
+                            <input v-model=nomsCommuneChecked v-bind:value=nomCommune v-bind:id=nomCommune
+                                   type="checkbox" @click="nomCommuneChanged">
                         </li>
                     </ul>
-                    <span>Noms cochés : {{ nomsCommuneChecked }}</span>
+
                 </div>
             </div>
 
@@ -86,7 +86,6 @@
             </div>
 
         </div>
-
 
 
     </div>

@@ -131,6 +131,7 @@ const app = new Vue({
         notreModele.getInstallations()
             .then(() => this.codesPostaux = notreModele.getCodePostaux())
             .then(() => this.nomsCommunes = notreModele.getNomsCommunes());
+
     },
 
     methods: {
@@ -140,15 +141,20 @@ const app = new Vue({
 
         },
         nomCommuneChanged: function (e) {
+            console.log("CHANGE");
             let activitesLibellesSet = new Set();
-            this.nomsCommuneChecked.forEach((element) => {
-                notreModele.selectNomsCommunes(element)
+            console.log(this.nomsCommuneChecked);
+            setTimeout((){
+                this.nomsCommuneChecked.forEach((element) => {
+                    notreModele.selectNomsCommunes(element)
                     .then(() => notreModele.getActivitesLibelles()
-                        .forEach((element2) => {
-                            activitesLibellesSet.add(element2);
-                        }))
+                    .forEach((element2) => {
+                        activitesLibellesSet.add(element2);
+                    }))
                     .then(() => this.activitesLibelles = Array.from(activitesLibellesSet))
-            });
+                });
+             }, 10);
+
         },
         selectActivite: function (activiteLibelle) {
             this.nomsUsuelsInstallations = notreModele.getNomUsuelInstallationByActiviteLibelle(activiteLibelle);
