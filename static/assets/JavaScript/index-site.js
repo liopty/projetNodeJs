@@ -1,6 +1,7 @@
 const urlCodePostalTous = 'http://localhost:3000/api/installation/';
 const urlActiviteCodePostal = 'http://localhost:3000/api/activite/code_postal/';
 const urlActiviteNomCommune = 'http://localhost:3000/api/activite/nom_de_la_commune/';
+const urlInstallationActiviteLibelle = 'http://localhost:3000/api/installation/activite_libelle/';
 
 
 class NotreModele {
@@ -105,6 +106,35 @@ class NotreModele {
             });
         });
     }
+
+    /**
+     * Place les activitesLibelle pour afficher les noms usuels
+     * @param activiteLibelle
+     * @return {Promise<any>}
+     */
+    setActivitesLibellesForNomsUsuels(activiteLibelle) {
+        return new Promise((resolve, reject) => {
+            activiteLibelle = activiteLibelle.trim();
+            fetch(urlInstallationActiviteLibelle + activiteLibelle).then((response) => {
+                return response.json();
+            })
+                .then((data) => {
+                    this.installations = data;
+                    resolve(this.installations);
+                }).catch(() => {
+                this.installations = [];
+                reject(this.installations);
+            });
+        })
+    }
+
+    /**
+     * Affiche les noms usuels que l'on a recuperé depuis setActivitesLibellesForNomsUsuels
+     *
+     */
+    getNomsUsuels() {
+        return [...new Set(this.installations.map(element => element.nomDeLaCommune))].sort();
+    }
 }
 
 const notreModele = new NotreModele();
@@ -137,27 +167,27 @@ const app = new Vue({
     methods: {
         codePostalChanged: function (e) {
             notreModele.selectCodePostal(this.codePostal).then(() => this.activitesLibelles = notreModele.getActivitesLibelles());
-
-
         },
         nomCommuneChanged: function (e) {
             console.log("CHANGE");
             let activitesLibellesSet = new Set();
             console.log(this.nomsCommuneChecked);
-            setTimeout(()=>{
+            setTimeout(() => {
                 this.nomsCommuneChecked.forEach((element) => {
                     notreModele.selectNomsCommunes(element)
-                    .then(() => notreModele.getActivitesLibelles()
-                    .forEach((element2) => {
-                        activitesLibellesSet.add(element2);
-                    }))
-                    .then(() => this.activitesLibelles = Array.from(activitesLibellesSet))
+                        .then(() => notreModele.getActivitesLibelles()
+                            .forEach((element2) => {
+                                activitesLibellesSet.add(element2);
+                            }))
+                        .then(() => this.activitesLibelles = Array.from(activitesLibellesSet))
                 });
-             }, 10);
+            }, 10);
 
         },
         selectActivite: function (activiteLibelle) {
-            this.nomsUsuelsInstallations = notreModele.getNomUsuelInstallationByActiviteLibelle(activiteLibelle);
+            //this.nomsUsuelsInstallations = notreModele.getNomUsuelInstallationByActiviteLibelle(activiteLibelle);
+            this.nomsUsuelsInstallations = notreModele.setActivitesLibellesForNomsUsuels(activiteLibelle);
+            console.log(this.nomsUsuelsInstallations);
         }
     }
 });

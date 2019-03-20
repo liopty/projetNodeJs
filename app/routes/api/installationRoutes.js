@@ -19,6 +19,10 @@ router.get('/code_postal/:code_postal', function (req, res) {
     installationController.findByCodePostal(req,res);
 });
 
+router.get('/activite_libelle/:activite_libelle', function (req, res) {
+    installationController.findNomUsuel_by_ActiviteLibelle(req,res);
+});
+
 
 
 

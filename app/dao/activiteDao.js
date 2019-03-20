@@ -41,6 +41,7 @@ class ActiviteDao {
      * @return {Promise<Array | never>}
      */
     findByCodePostal(codePostal) {
+
         const sqlRequest = "select activite.activite_code, activite.activite_libelle, " +
             "equipement.numero_de_la_fiche_equipement," +
             "installation.numero_de_l_installation, installation.nom_usuel_de_l_installation, installation.nom_de_la_commune, installation.code_postal " +
@@ -56,10 +57,12 @@ class ActiviteDao {
         return this.common.findAllWithParams(sqlRequest, sqlParams).then(rows => {
             let activites = [];
             for (const row of rows) {
+
                 activites.push(
                     new Activite(row.activite_code, row.activite_libelle,
                         new Equipement(row.numero_de_la_fiche_equipement,
                             new Installation(row.numero_de_l_installation, row.nom_usuel_de_l_installation, row.code_postal, row.nom_de_la_commune))));
+
             }
             return activites;
         });
@@ -87,7 +90,6 @@ class ActiviteDao {
 
         return this.common.findAllWithParams(sqlRequest,sqlParams)
             .then(rows => {
-                console.log(rows);
                 let activites = [];
                 for (const row of rows) {
                     activites.push(

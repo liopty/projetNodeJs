@@ -36,7 +36,16 @@ class InstallationController {
             .catch(this.common.findError(res));
     }
 
-
+    /**
+     * Retrouve les noms usuels par rapport aux activités
+     * @param activiteLibelle
+     */
+    findNomUsuel_by_ActiviteLibelle(req,res) {
+        const activiteLibelle = req.params.activite_libelle;
+        this.installationDao.findNomUsuel_by_ActiviteLibelle(activiteLibelle)
+            .then(this.common.findSuccess(res))
+            .catch(this.common.findError(res));
+    }
 }
 
 module.exports = InstallationController;
