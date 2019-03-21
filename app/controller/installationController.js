@@ -41,8 +41,8 @@ class InstallationController {
      * @param activiteLibelle
      */
     findNomUsuel_by_ActiviteLibelle(req,res) {
-        const activiteLibelle = req.params.activite_libelle;
-        const nomCommune = req.params.nom_commune;
+        const activiteLibelle = req.query.activite_libelle;
+        const nomCommune = req.query.nom_commune;
         this.installationDao.findNomUsuel_by_ActiviteLibelle(activiteLibelle, nomCommune)
             .then(this.common.findSuccess(res))
             .catch(this.common.findError(res));

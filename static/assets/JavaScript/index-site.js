@@ -109,32 +109,31 @@ class NotreModele {
     }
 
     /**
-     * Place les activitesLibelle pour afficher les noms usuels
-     * @param activiteLibelle Libelle d'activites
-     * @param nomCommune commune cochée
-     * @return {string[]}
+     * Selection ActiviteLibelle et affichage noms usuels
+     * @param activiteLibelle
+     * @param nomCommune
+     * @return {Promise<any>}
      */
-    setNomsUsuels(activiteLibelle, nomCommune) {
-        let tableauNomUsuels = [];
-
-        let recup = new Promise((resolve, reject) => {
-            activiteLibelle = activiteLibelle.trim();
-            nomCommune = nomCommune.trim();
-            fetch(urlInstallationActiviteLibelle + activiteLibelle + "/" + nomCommune).then((response) => {
-                return response.json();
-            })
-                .then((data) => {
+    selectActivitesLibelles(activiteLibelle, nomCommune) {
+        return new Promise((resolve, reject) => {
+            fetch(urlInstallationActiviteLibelle + "?activite_libelle=" + activiteLibelle + "&nom_commune=" + nomCommune)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data)=> {
                     this.nomsUsuels = data;
                     resolve(this.nomsUsuels);
-
-                }).catch(() => {
-                this.nomsUsuels = [];
-                reject(this.nomsUsuels);
-            });
+                })
+                .catch(() => {
+                    this.nomsUsuels = [];
+                    reject(this.nomsUsuels);
+                });
         });
-        //console.log([...new Set(this.installations.map(element => element.nomUsuelDeLInstallation))].sort());
-        //return [...new Set(this.installations.map(element => element.nomUsuelDeLInstallation))].sort();
-        return this.nomsUsuels;
+    }
+
+
+    getNomsUsuels() {
+        return [...new Set(this.nomsUsuels)].sort();
     }
 
 }
@@ -163,7 +162,6 @@ const app = new Vue({
         notreModele.getInstallations()
             .then(() => this.codesPostaux = notreModele.getCodePostaux())
             .then(() => this.nomsCommunes = notreModele.getNomsCommunes());
-
     },
 
     methods: {
@@ -189,16 +187,21 @@ const app = new Vue({
                             }))
                         .then(() => this.activitesLibelles = Array.from(activitesLibellesSet))
                 });
-            }, 10);
+            }, 500);
 
         },
         selectActivite: function (activiteLibelle) {
-            //this.nomsUsuelsInstallations = notreModele.getNomUsuelInstallationByActiviteLibelle(activiteLibelle);
-            //this.nomsUsuelsInstallations = notreModele.setNomsUsuels("Basket-Ball", "Bouguenais");
-            this.nomsCommuneChecked.forEach((element) => {
-                this.nomsUsuelsInstallations = [];
-                this.nomsUsuelsInstallations = notreModele.setNomsUsuels(activiteLibelle, element);
+            this.nomsUsuelsInstallations = [];
+
+            this.nomsCommuneChecked.forEach((nomCommune) => {
+                notreModele.selectActivitesLibelles(activiteLibelle, nomCommune)
+                    .then(() => {
+                        console.log(notreModele.getNomsUsuels());
+                        this.nomsUsuelsInstallations.push(...notreModele.getNomsUsuels());
+                    });
             })
+
+
         }
     }
 });
