@@ -16,6 +16,7 @@ class NotreModele {
         this.activites = [];
 
         this.codePostalChoisi = null; // On va stocker le code postal choisi dans une variable
+        this.nomsUsuels = []; // Les noms usuels des locations ou se trouvent les activités
     }
 
     /**
@@ -111,25 +112,29 @@ class NotreModele {
      * Place les activitesLibelle pour afficher les noms usuels
      * @param activiteLibelle Libelle d'activites
      * @param nomCommune commune cochée
-     * @return {Promise<any>}
+     * @return {string[]}
      */
-    setActivitesLibelles(activiteLibelle, nomCommune) {
-        const recup = new Promise((resolve, reject) => {
+    setNomsUsuels(activiteLibelle, nomCommune) {
+        let tableauNomUsuels = [];
+
+        let recup = new Promise((resolve, reject) => {
             activiteLibelle = activiteLibelle.trim();
             nomCommune = nomCommune.trim();
             fetch(urlInstallationActiviteLibelle + activiteLibelle + "/" + nomCommune).then((response) => {
                 return response.json();
             })
                 .then((data) => {
-                    this.installations = data;
-                    resolve(this.installations);
+                    this.nomsUsuels = data;
+                    resolve(this.nomsUsuels);
+
                 }).catch(() => {
-                this.installations = [];
-                reject(this.installations);
+                this.nomsUsuels = [];
+                reject(this.nomsUsuels);
             });
         });
         //console.log([...new Set(this.installations.map(element => element.nomUsuelDeLInstallation))].sort());
-        return [...new Set(this.installations.map(element => element.nomUsuelDeLInstallation))].sort();
+        //return [...new Set(this.installations.map(element => element.nomUsuelDeLInstallation))].sort();
+        return this.nomsUsuels;
     }
 
 }
@@ -189,7 +194,11 @@ const app = new Vue({
         },
         selectActivite: function (activiteLibelle) {
             //this.nomsUsuelsInstallations = notreModele.getNomUsuelInstallationByActiviteLibelle(activiteLibelle);
-            this.nomsUsuelsInstallations = notreModele.setActivitesLibelles("Basket-Ball", "Bouguenais");
+            //this.nomsUsuelsInstallations = notreModele.setNomsUsuels("Basket-Ball", "Bouguenais");
+            this.nomsCommuneChecked.forEach((element) => {
+                this.nomsUsuelsInstallations = [];
+                this.nomsUsuelsInstallations = notreModele.setNomsUsuels(activiteLibelle, element);
+            })
         }
     }
 });
