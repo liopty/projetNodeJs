@@ -109,13 +109,15 @@ class NotreModele {
 
     /**
      * Place les activitesLibelle pour afficher les noms usuels
-     * @param activiteLibelle
+     * @param activiteLibelle Libelle d'activites
+     * @param nomCommune commune cochée
      * @return {Promise<any>}
      */
-    setActivitesLibellesForNomsUsuels(activiteLibelle) {
+    setActivitesLibelles(activiteLibelle, nomCommune) {
         const recup = new Promise((resolve, reject) => {
             activiteLibelle = activiteLibelle.trim();
-            fetch(urlInstallationActiviteLibelle + activiteLibelle).then((response) => {
+            nomCommune = nomCommune.trim();
+            fetch(urlInstallationActiviteLibelle + activiteLibelle + "/" + nomCommune).then((response) => {
                 return response.json();
             })
                 .then((data) => {
@@ -126,7 +128,7 @@ class NotreModele {
                 reject(this.installations);
             });
         });
-        console.log([...new Set(this.installations.map(element => element.nomUsuelDeLInstallation))].sort());
+        //console.log([...new Set(this.installations.map(element => element.nomUsuelDeLInstallation))].sort());
         return [...new Set(this.installations.map(element => element.nomUsuelDeLInstallation))].sort();
     }
 
@@ -160,13 +162,19 @@ const app = new Vue({
     },
 
     methods: {
+        /*
+         * Quand le code postal change
+         */
         codePostalChanged: function (e) {
             notreModele.selectCodePostal(this.codePostal).then(() => this.activitesLibelles = notreModele.getActivitesLibelles());
         },
+        /*
+         * Quand le nom de commune change, on met a jour les activités libelles
+         */
         nomCommuneChanged: function (e) {
-            console.log("CHANGE");
+            //console.log("CHANGE");
             let activitesLibellesSet = new Set();
-            console.log(this.nomsCommuneChecked);
+            //console.log(this.nomsCommuneChecked);
             setTimeout(() => {
                 this.nomsCommuneChecked.forEach((element) => {
                     notreModele.selectNomsCommunes(element)
@@ -181,7 +189,7 @@ const app = new Vue({
         },
         selectActivite: function (activiteLibelle) {
             //this.nomsUsuelsInstallations = notreModele.getNomUsuelInstallationByActiviteLibelle(activiteLibelle);
-            this.nomsUsuelsInstallations=notreModele.setActivitesLibellesForNomsUsuels(activiteLibelle);
+            this.nomsUsuelsInstallations = notreModele.setActivitesLibelles("Basket-Ball", "Bouguenais");
         }
     }
 });

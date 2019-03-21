@@ -42,7 +42,8 @@ class InstallationController {
      */
     findNomUsuel_by_ActiviteLibelle(req,res) {
         const activiteLibelle = req.params.activite_libelle;
-        this.installationDao.findNomUsuel_by_ActiviteLibelle(activiteLibelle)
+        const nomCommune = req.params.nom_commune;
+        this.installationDao.findNomUsuel_by_ActiviteLibelle(activiteLibelle, nomCommune)
             .then(this.common.findSuccess(res))
             .catch(this.common.findError(res));
     }

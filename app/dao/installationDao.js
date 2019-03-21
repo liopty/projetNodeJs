@@ -50,15 +50,17 @@ class InstallationDao {
     /**
      * Retrouve les noms usuels par rapport aux activités
      * @param activiteLibelle L'activité par laquelle on récupère le nom Usuel
+     * @param nomCommune Nom de communes cochées
      */
-    findNomUsuel_by_ActiviteLibelle(activiteLibelle) {
+    findNomUsuel_by_ActiviteLibelle(activiteLibelle,nomCommune) {
         const sqlRequest = "select installation.nom_usuel_de_l_installation\n" +
             "                       from equipement\n" +
             "                       inner join installation on installation.numero_de_l_installation=equipement.numero_de_l_installation \n" +
             "                       inner join activite on activite.numero_de_la_fiche_equipement=equipement.numero_de_la_fiche_equipement\n" +
-            "                       where activite.activite_libelle=$activiteLibelle";
+            "                       where activite.activite_libelle=$activiteLibelle and installation.nom_de_la_commune=$nomCommune";
         const sqlParams = {
-            $activiteLibelle: activiteLibelle
+            $activiteLibelle: activiteLibelle,
+            $nomCommune : nomCommune
         };
         return this.common.findAllWithParams(sqlRequest, sqlParams).then(rows => {
             let nomsUsuels = [];
