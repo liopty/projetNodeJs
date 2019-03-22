@@ -6,6 +6,7 @@ const urlActiviteNomCommune = 'http://localhost:3000/api/activite/nom_de_la_comm
 const urlInstallationActiviteLibelle = 'http://localhost:3000/api/installation/activite_libelle/';
 
 
+
 class NotreModele {
     /**
      * Constructeur de notre modele.
@@ -194,12 +195,12 @@ const app = new Vue({
 
             }));
 
-
         },
         /*
          * Quand le nom de commune change, on met a jour les activités libelles
          */
         nomCommuneChanged: function (e) {
+            this.codesPostauxChecked = []; // On vide les codes postaux
             this.activitesLibelles = []; // On vide l'array pour que les activités s'enlèvent quand on décoche
             let activitesLibellesSet = new Set();
             setTimeout(() => {
@@ -216,10 +217,11 @@ const app = new Vue({
         },
         selectActivite: function (activiteLibelle) {
             this.nomsUsuelsInstallations = [];
+
             this.nomsCommuneChecked.forEach((nomCommune) => {
                 notreModele.selectActivitesLibelles(activiteLibelle, nomCommune)
                     .then(() => {
-                        //console.log(notreModele.getNomsUsuels());
+                        console.log(notreModele.getNomsUsuels());
                         this.nomsUsuelsInstallations.push(...notreModele.getNomsUsuels());
                     });
             })

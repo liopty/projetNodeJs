@@ -1,34 +1,35 @@
 # Projet de Technologies pour la Production d'Applications
 
-Ce projet permet l'implémentation d'une API NodeJS REST
-
-This project is a proof of concept (POC).  
-It's purpose is to demonstrate an implementation of a NodeJS REST API using SQLite as a database (sqlite.db).   
-The code is written in ES6 and uses Promises.
+Ce projet permet l'implémentation d'une API NodeJS REST en utilisant SQLite en tant que base de données.
+Il est ecrit avec ECMASCRIPT6 et utilise des promesses.
 
 ## Installation :
 
 1. Clone this repository : `git clone https://github.com/romwaldtff/NodeJS-REST-API-SQLite.git`  
 2. Then install its dependencies : `npm install`
 
+- Cloner ce repertoire
+- Installer ses dépendences
+
 ## Fonctionnalités attendues
+-   A partir d'un nom de commune afficher les libellés d'activités ainsi que les noms usuels des activités une fois que l'on clique dessus.
+-   Cliquer sur un code postal et obtenir les libellés d'activités, puis les noms usuels des endroits ou l'on peut les pratiquer une fois que l'on clique sur l'activité.
 -   A partir d'une activité afficher les lieux de pratique et modalités d'accès.
--   
+-
 
 ## Requirements :
 
-- [Git](https://git-scm.com/) if you want to clone this repository.
-- [NodeJS](https://nodejs.org/en/) to run the application.
-- [Npm](https://www.npmjs.com/) to install dependencies (see the full list below at "Dependencies").
-- [Postman](https://www.getpostman.com/) to test the API.
+- [Git](https://git-scm.com/) Pour cloner ce repertoire.
+- [NodeJS](https://nodejs.org/en/) Dans sa derniere version.
+- [Npm](https://www.npmjs.com/) Afin d'installer les dépendences.
+- [Postman](https://www.getpostman.com/) Pour tester l'API.
 
 ## Getting started :
 
-1. Install this application (See Installation).
-2. Start the server with : `node index.js`
-3. Connect Postman to the API at : `http://localhost:3000`
-4. Try the different routes of the API (For more details, see the [documentation](https://github.com/romwaldtff/NodeJS-REST-API-SQLite/wiki)).
-
+1. Installer l'application.
+2. Commencer le serveur : `node index.js`
+3. Lancer le site en tapant cette URL dans un navigateur: `http://localhost:3000`
+4. Appliquer différents filtres.
 Alternatively, you can use `node index.js YOUR_PORT_NUMBER` to start the server with a specific port.  
 
 ## Dependencies (installed via `npm install`)
