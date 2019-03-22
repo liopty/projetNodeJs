@@ -42,7 +42,7 @@
                     <ul>
                         <li v-for="codePostal in codesPostaux">
                             <label v-bind:for="codePostal">{{codePostal}}</label>
-                            <input v-on:keyup.enter="codePostalChanged" v-bind:value=codePostal v-bind:id=codePostal
+                            <input @click="codePostalChanged" v-bind:value=codePostal v-bind:id=codePostal
                                    v-model="codesPostauxChecked" type="checkbox">
                         </li>
                     </ul>
@@ -91,7 +91,7 @@
     </div>
 
 </div>
-
+<script src="assets/JavaScript/Utils.js"></script>
 <script src="assets/JavaScript/index-site.js"></script>
 
 

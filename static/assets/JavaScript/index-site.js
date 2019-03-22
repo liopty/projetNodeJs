@@ -1,3 +1,5 @@
+"use strict";
+
 const urlCodePostalTous = 'http://localhost:3000/api/installation/';
 const urlActiviteCodePostal = 'http://localhost:3000/api/activite/code_postal/';
 const urlActiviteNomCommune = 'http://localhost:3000/api/activite/nom_de_la_commune/';
@@ -61,11 +63,12 @@ class NotreModele {
                 .then((data) => {
                     this.activites = data;
                     resolve(this.activites);
-                }).catch(() => {
-                this.activites = [];
-                this.activiteSelectionnee = null;
-                reject(this.activites);
-            });
+                })
+                .catch(() => {
+                    this.activites = [];
+                    this.activiteSelectionnee = null;
+                    reject(this.activites);
+                });
         });
     }
 
@@ -100,11 +103,12 @@ class NotreModele {
                 .then((data) => {
                     this.activites = data;
                     resolve(this.activites);
-                }).catch(() => {
-                this.activites = [];
-                this.activiteSelectionnee = null;
-                reject(this.activites);
-            });
+                })
+                .catch(() => {
+                    this.activites = [];
+                    this.activiteSelectionnee = null;
+                    reject(this.activites);
+                });
         });
     }
 
@@ -120,7 +124,7 @@ class NotreModele {
                 .then((response) => {
                     return response.json();
                 })
-                .then((data)=> {
+                .then((data) => {
                     this.nomsUsuels = data;
                     resolve(this.nomsUsuels);
                 })
@@ -131,7 +135,10 @@ class NotreModele {
         });
     }
 
-
+    /**
+     * Retourne les noms usuels obtenus avec selectActivitesLibelles
+     * @return {this}
+     */
     getNomsUsuels() {
         return [...new Set(this.nomsUsuels)].sort();
     }
@@ -166,18 +173,35 @@ const app = new Vue({
 
     methods: {
         /*
-         * Quand le code postal change
+         * Quand le code postal change, nous modifions les libelles d'activités
          */
         codePostalChanged: function (e) {
-            notreModele.selectCodePostal(this.codePostal).then(() => this.activitesLibelles = notreModele.getActivitesLibelles());
+            //notreModele.selectCodePostal(this.codePostal).then(() => this.activitesLibelles = notreModele.getActivitesLibelles());
+            this.activitesLibelles = []; // On vide l'array pour que les activités s'enlèvent quand on décoche
+            let activitesLibellesSet = new Set();
+
+            return new Promise(((resolve, reject) => {
+                setTimeout(() => {
+                    this.codesPostauxChecked.forEach((codePostal) => {
+                        notreModele.selectCodePostal(codePostal)
+                            .then(() => notreModele.getActivitesLibelles()
+                                .forEach((activite) => {
+                                    activitesLibellesSet.add(activite);
+                                }))
+                            .then(() => this.activitesLibelles = activitesLibellesSet);
+                    })
+                } ,10);
+
+            }));
+
+
         },
         /*
          * Quand le nom de commune change, on met a jour les activités libelles
          */
         nomCommuneChanged: function (e) {
-            //console.log("CHANGE");
+            this.activitesLibelles = []; // On vide l'array pour que les activités s'enlèvent quand on décoche
             let activitesLibellesSet = new Set();
-            //console.log(this.nomsCommuneChecked);
             setTimeout(() => {
                 this.nomsCommuneChecked.forEach((element) => {
                     notreModele.selectNomsCommunes(element)
@@ -187,21 +211,18 @@ const app = new Vue({
                             }))
                         .then(() => this.activitesLibelles = Array.from(activitesLibellesSet))
                 });
-            }, 500);
+            }, 10);
 
         },
         selectActivite: function (activiteLibelle) {
             this.nomsUsuelsInstallations = [];
-
             this.nomsCommuneChecked.forEach((nomCommune) => {
                 notreModele.selectActivitesLibelles(activiteLibelle, nomCommune)
                     .then(() => {
-                        console.log(notreModele.getNomsUsuels());
+                        //console.log(notreModele.getNomsUsuels());
                         this.nomsUsuelsInstallations.push(...notreModele.getNomsUsuels());
                     });
             })
-
-
         }
     }
 });
