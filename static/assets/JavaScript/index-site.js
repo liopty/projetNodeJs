@@ -6,6 +6,18 @@ const urlActiviteNomCommune = 'http://localhost:3000/api/activite/nom_de_la_comm
 const urlInstallationActiviteLibelle = 'http://localhost:3000/api/installation/activite_libelle/';
 
 
+/**
+ * Enumeration indiquant le type de requete a faire.
+ * Nous nous en servons pour recuperer les noms usuels des endroits ou l'on pratique les activités de différentes façons :
+ * -    si l'on demande des activités par rappport au code postal
+ * -    si on les demande par rapport au nom de la commune
+ * @type {{NOM_COMMUNE: string, CODE_POSTAL: string}}
+ */
+const typeRequeteEnum = {
+    CODE_POSTAL: "code postal",
+    NOM_COMMUNE: "nom commune"
+};
+
 
 class NotreModele {
     /**
@@ -44,15 +56,14 @@ class NotreModele {
     }
 
     /**
-     * Recupère les codes postes
+     * Affiche les codes postaux dans la vue
      */
     getCodePostaux() {
         return [...new Set(this.installations.map(element => element.codePostal))].sort();
     }
 
     /**
-     * Selection du codePostal et affichage des activités disponibles dans ce code postal
-     * TODO : FAIRE MARCHER CA POUR PLUSIEURS CODES POSTAUX EN MEME TEMPS
+     * Recuperation des activités selon un code postal précis
      * @param codePostal
      * @return {Promise<any>}
      */
@@ -73,12 +84,21 @@ class NotreModele {
         });
     }
 
+
+    /**
+     * Recuperation des libelles d'activités
+     */
     getActivitesLibelles() {
         return [...new Set(this.activites.map(function (element) {
             return element.activiteLibelle;
         }))].sort();
     }
 
+    /**
+     * Recuperation des noms usuels par le libellé des activités.
+     * @param activiteLibelle
+     * @return {any[]}
+     */
     getNomUsuelInstallationByActiviteLibelle(activiteLibelle) {
         let installations = this.activites.filter(activite => activite.activiteLibelle === activiteLibelle).map(element => element.equipement.installation.nomUsuelDeLInstallation);
         installations = [...new Set(installations)].sort();
@@ -86,14 +106,15 @@ class NotreModele {
     }
 
     /**
-     * Getter des noms de communes.
+     * Recupere les noms de commune
+     * @return {this}
      */
     getNomsCommunes() {
         return [...new Set(this.installations.map(element => element.nomDeLaCommune))].sort();
     }
 
     /**
-     * On récupère toutes les activités qui sont disponibles dans une commune précise
+     * Recupere les activites praticables depuis une commune.
      * @param nomCommune Nom de la commune ou on fait la requete.
      */
     selectNomsCommunes(nomCommune) {
@@ -114,7 +135,9 @@ class NotreModele {
     }
 
     /**
-     * Selection ActiviteLibelle et affichage noms usuels
+     * Recuperation des noms usuels selon un libelle d'activite et un nom de commune.
+     * Crée pour faire usage de req.query qui est pas mal si il y a des slash dans des parametres.
+     * Mais sinon utiliser getNomUsuelInstallationByActiviteLibelle qui est très bien aussi.
      * @param activiteLibelle
      * @param nomCommune
      * @return {Promise<any>}
@@ -137,7 +160,7 @@ class NotreModele {
     }
 
     /**
-     * Retourne les noms usuels obtenus avec selectActivitesLibelles
+     * Retourne les noms usuels
      * @return {this}
      */
     getNomsUsuels() {
@@ -161,7 +184,9 @@ const app = new Vue({
 
             nomsUsuelsInstallations: [],
             nomsCommunes: [], // Afficher les noms des communes dans une liste de checkbox
-            nomsCommuneChecked: [] // Noms Communes Selectionées
+            nomsCommuneChecked: [], // Noms Communes Selectionées
+
+            typeRequete: ''
         }
     },
 
@@ -177,31 +202,32 @@ const app = new Vue({
          * Quand le code postal change, nous modifions les libelles d'activités
          */
         codePostalChanged: function (e) {
-            //notreModele.selectCodePostal(this.codePostal).then(() => this.activitesLibelles = notreModele.getActivitesLibelles());
             this.activitesLibelles = []; // On vide l'array pour que les activités s'enlèvent quand on décoche
+            this.nomsCommuneChecked = []; // On vide les noms de communes cochées
+            this.typeRequete = typeRequeteEnum.CODE_POSTAL; // Nous faisons une requete de type code postal
+
             let activitesLibellesSet = new Set();
-
-            return new Promise(((resolve, reject) => {
-                setTimeout(() => {
-                    this.codesPostauxChecked.forEach((codePostal) => {
-                        notreModele.selectCodePostal(codePostal)
-                            .then(() => notreModele.getActivitesLibelles()
-                                .forEach((activite) => {
-                                    activitesLibellesSet.add(activite);
-                                }))
-                            .then(() => this.activitesLibelles = activitesLibellesSet);
-                    })
-                } ,10);
-
-            }));
+            setTimeout(() => {
+                this.codesPostauxChecked.forEach((codePostal) => {
+                    notreModele.selectCodePostal(codePostal)
+                        .then(() => notreModele.getActivitesLibelles()
+                            .forEach((activite) => {
+                                activitesLibellesSet.add(activite);
+                            }))
+                        .then(() => this.activitesLibelles = activitesLibellesSet);
+                })
+            }, 10);
 
         },
         /*
          * Quand le nom de commune change, on met a jour les activités libelles
          */
         nomCommuneChanged: function (e) {
-            this.codesPostauxChecked = []; // On vide les codes postaux
+            // Configuration
             this.activitesLibelles = []; // On vide l'array pour que les activités s'enlèvent quand on décoche
+            this.codesPostauxChecked = []; // On decoche les codes postaux
+            this.typeRequete = typeRequeteEnum.NOM_COMMUNE; // Nous faisons une requete de type nom commune
+
             let activitesLibellesSet = new Set();
             setTimeout(() => {
                 this.nomsCommuneChecked.forEach((element) => {
@@ -215,16 +241,33 @@ const app = new Vue({
             }, 10);
 
         },
-        selectActivite: function (activiteLibelle) {
-            this.nomsUsuelsInstallations = [];
 
-            this.nomsCommuneChecked.forEach((nomCommune) => {
-                notreModele.selectActivitesLibelles(activiteLibelle, nomCommune)
-                    .then(() => {
-                        console.log(notreModele.getNomsUsuels());
-                        this.nomsUsuelsInstallations.push(...notreModele.getNomsUsuels());
-                    });
-            })
+        /*
+         * Si l'on choisit une activité les noms usuels des endroits ou l'on peut les pratiquer s'affichent.
+         */
+        selectActivite: function (activiteLibelle) {
+            this.nomsUsuelsInstallations = []; // On vide les noms usuels
+            // Routage des types de requetes
+            if (this.typeRequete === typeRequeteEnum.CODE_POSTAL) {
+                //this.nomsUsuelsInstallations = notreModele.getNomUsuelInstallationByActiviteLibelle(activiteLibelle);
+                this.codesPostauxChecked.forEach((codePostal) => {
+                    notreModele.selectCodePostal(codePostal)
+                        .then(() => {
+                            this.nomsUsuelsInstallations.push(...notreModele.getNomUsuelInstallationByActiviteLibelle(activiteLibelle));
+                        });
+                });
+                console.log(this.nomsUsuelsInstallations);
+
+            } else if (this.typeRequete === typeRequeteEnum.NOM_COMMUNE) {
+                this.nomsCommuneChecked.forEach((nomCommune) => {
+                    notreModele.selectActivitesLibelles(activiteLibelle, nomCommune) // On pourrait utiliser getNomUsuelInstallationByActiviteLibelle(activiteLibelle) mais nous voulions tester les req.query
+                        .then(() => {
+                            this.nomsUsuelsInstallations.push(...notreModele.getNomsUsuels());
+                        });
+                })
+            } else {
+                console.log("ERREUR", "Pas de type de requete enum", "Dans index-site.js, app -> methods -> selectActivite")
+            }
         }
     }
 });
