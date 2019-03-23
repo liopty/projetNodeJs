@@ -7,115 +7,107 @@
     <script src="assets/vendor/bootstrap/dist/js/bootstrap.js"></script>
     <script src="assets/vendor/Vue.js/vue.js"></script>
     <link href="assets/vendor/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
-    <link href="assets/css/tuto.css" rel="stylesheet">
 </head>
 <body>
 
-<div >
-
-
-
-
+<div>
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="activite-tab" data-toggle="tab" href="#activite" role="tab" aria-controls="activite" aria-selected="true">Activités</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="installations-tab" data-toggle="tab" href="#installations" role="tab" aria-controls="installations" aria-selected="false">Installations</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="equipement-tab" data-toggle="tab" href="#equipement" role="tab" aria-controls="equipement" aria-selected="false">Equipements</a>
-                </li>
-            </ul>
-            <!-- Tab panes -->
-            <div class="tab-content">
-                <div class="tab-pane active app" id="activite" role="tabpanel" aria-labelledby="activite-tab">
-                    <div class="row">
-                        <!-- Les filtres a appliquer -->
-                        <div class="col-3">
-                            <h1 class="row mx-auto"> Filtres </h1>
-                            <!--Liste des filtres avec des collapse-->
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="activite-tab" data-toggle="tab" href="#activite" role="tab"
+                           aria-controls="activite" aria-selected="true">Activités</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="installations-tab" data-toggle="tab" href="#installations" role="tab"
+                           aria-controls="installations" aria-selected="false">Installations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="equipement-tab" data-toggle="tab" href="#equipement" role="tab"
+                           aria-controls="equipement" aria-selected="false">Equipements</a>
+                    </li>
+                </ul>
 
-                            <!-- Filtre Code postal -->
-                            <button class="btn btn-primary" data-toggle="collapse" href="#codePostalForm" role="button"
-                                    aria-expanded="false" aria-controls="codePostalForm">
-                                Code Postal
-                            </button>
-                            <div class="row mx-auto collapse multi-collapse" id="codePostalForm">
-                                <!--On apelle codePostalChanged quand on modifie l'input-->
+                <!-- Tab panes -->
+                <div class="tab-content">
 
-                                <!-- TODO : TRANSFORMER LE CHOIX CODE POSTAL UNIQUE EN UNE LISTE DE CODES POSTAUX EN CHECKBOX -->
-                                <!--
-                                <input id="codePostal" type="text" v-model="codePostal" list="codesPostaux"
-                                       v-on:input="codePostalChanged">
-                                <datalist id="codesPostaux">
-                                    <option v-for="codePostal in codesPostaux">
-                                        {{codePostal}}
-                                    </option>
-                                </datalist>
-                                -->
+                    <!-- Premier onglet 'Activites' -->
+                    <div class="tab-pane active app" id="activite" role="tabpanel" aria-labelledby="activite-tab">
+                        <div class="row">
+                            <!-- Les filtres a appliquer -->
+                            <div class="col-3">
+                                <h1 class="row mx-auto"> Filtres </h1>
+                                <!-- Filtre Code postal -->
+                                <button class="btn btn-primary" data-toggle="collapse" href="#codePostalForm"
+                                        role="button"
+                                        aria-expanded="false" aria-controls="codePostalForm">
+                                    Code Postal
+                                </button>
 
-                                <ul>
-                                    <li v-for="codePostal in codesPostaux">
-                                        <label v-bind:for="codePostal">{{codePostal}}</label>
-                                        <input @click="codePostalChanged" v-bind:value=codePostal v-bind:id=codePostal
-                                               v-model="codesPostauxChecked" type="checkbox">
+                                <div class="row mx-auto collapse multi-collapse" id="codePostalForm">
+                                    <ul>
+                                        <li v-for="codePostal in codesPostaux">
+                                            <label v-bind:for="codePostal">{{codePostal}}</label>
+                                            <input @click="codePostalChanged" v-bind:value=codePostal
+                                                   v-bind:id=codePostal
+                                                   v-model="codesPostauxChecked" type="checkbox">
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- Filtre Nom Commune -->
+                                <button class="btn btn-primary" data-toggle="collapse" href="#communeForm" role="button"
+                                        aria-expanded="false" aria-controls="communeForm">
+                                    Nom de Commune
+                                </button>
+                                <div class="row mx-auto collapse multi-collapse" id="communeForm">
+                                    <ul>
+                                        <li v-for="nomCommune in nomsCommunes">
+                                            <label v-bind:for="nomCommune">{{nomCommune}}</label>
+                                            <input v-model=nomsCommuneChecked v-bind:value=nomCommune
+                                                   v-bind:id=nomCommune
+                                                   type="checkbox" @click="nomCommuneChanged">
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            </div>
+
+                            <!-- Le résultats de la requete-->
+                            <div class="col-6">
+                                <h1 class="row mx-auto"> Nom des activités </h1>
+                                <div class="list-group">
+                                    <button class="list-group-item list-group-item-action" v-for="activiteLibelle in activitesLibelles"
+                                        v-on:click="selectActivite(activiteLibelle)">
+                                        {{activiteLibelle}}
+                                    </button>
+                                </div>
+                            </div>
+
+
+                            <div class="col-3">
+                                <h1 class="row">Noms des installations</h1>
+                                <ul class="list-group">
+                                    <li class="list-group-item" v-for="nomUsuelInstallation in nomsUsuelsInstallations">
+                                        {{nomUsuelInstallation}}
                                     </li>
                                 </ul>
                             </div>
 
-                            <!-- Filtre Nom Commune -->
-                            <button class="btn btn-primary" data-toggle="collapse" href="#communeForm" role="button"
-                                    aria-expanded="false" aria-controls="communeForm">
-                                Nom de Commune
-                            </button>
-                            <div class="row mx-auto collapse multi-collapse" id="communeForm">
-                                <ul>
-                                    <li v-for="nomCommune in nomsCommunes">
-                                        <label v-bind:for="nomCommune">{{nomCommune}}</label>
-                                        <input v-model=nomsCommuneChecked v-bind:value=nomCommune v-bind:id=nomCommune
-                                               type="checkbox" @click="nomCommuneChanged">
-                                    </li>
-                                </ul>
-
-                            </div>
-
-                        </div>
-
-                        <!-- Le résultat de la requete-->
-                        <div class="col-6">
-                            <h1 class="row mx-auto"> Nom des activités </h1>
-                            <ul>
-                                <li class="row" v-for="activiteLibelle in activitesLibelles"
-                                    v-on:click="selectActivite(activiteLibelle)">
-                                    {{activiteLibelle}}
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="col-3">
-                            <h1 class="row">Noms des installations</h1>
-                            <ul>
-                                <li class="row" v-for="nomUsuelInstallation in nomsUsuelsInstallations">
-                                    {{nomUsuelInstallation}}
-                                </li>
-                            </ul>
                         </div>
 
                     </div>
 
-                </div>
-                <div class="tab-pane app2" id="installations" role="tabpanel" aria-labelledby="installations-tab">
+                    <!-- Deuxieme onglet 'Installations' -->
+                    <div class="tab-pane app2" id="installations" role="tabpanel" aria-labelledby="installations-tab">
 
 
-                    <div class="row">
-                        <!-- Les filtres a appliquer -->
-                        <div class="col-3">
-                            <h1 class="row mx-auto"> Filtres </h1>
-                            <!--Liste des filtres avec des collapse-->
+                        <div class="row">
+                            <!-- Les filtres a appliquer -->
+                            <div class="col-3">
+                                <h1 class="row mx-auto"> Filtres </h1>
+                                <!--Liste des filtres avec des collapse-->
 
                            <!-- Filtre nomActivite -->
                             <button class="btn btn-primary" data-toggle="collapse" href="#nomActiviteForm" role="button"

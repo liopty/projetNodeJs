@@ -255,7 +255,7 @@ const app = new Vue({
                             .forEach((activite) => {
                                 activitesLibellesSet.add(activite);
                             }))
-                        .then(() => this.activitesLibelles = activitesLibellesSet);
+                        .then(() => this.activitesLibelles = Array.from(activitesLibellesSet));
                 })
             }, 10);
 
