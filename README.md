@@ -104,8 +104,7 @@ projetNodeJs
   |  ├── exemple_v-for.html
   |  ├── exemple_v-on.html
   |  ├── exemple_v-show.html
-  |  ├── index.html
-  |  └── test.html
+  |  └── index.html
   └── tree.txt
 ```
 
