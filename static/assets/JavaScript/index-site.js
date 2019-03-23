@@ -204,6 +204,7 @@ const app = new Vue({
         codePostalChanged: function (e) {
             this.activitesLibelles = []; // On vide l'array pour que les activités s'enlèvent quand on décoche
             this.nomsCommuneChecked = []; // On vide les noms de communes cochées
+            this.nomsUsuelsInstallations = []; // On vide les noms usuels
             this.typeRequete = typeRequeteEnum.CODE_POSTAL; // Nous faisons une requete de type code postal
 
             let activitesLibellesSet = new Set();
@@ -226,6 +227,7 @@ const app = new Vue({
             // Configuration
             this.activitesLibelles = []; // On vide l'array pour que les activités s'enlèvent quand on décoche
             this.codesPostauxChecked = []; // On decoche les codes postaux
+            this.nomsUsuelsInstallations = []; // On vide les noms usuels
             this.typeRequete = typeRequeteEnum.NOM_COMMUNE; // Nous faisons une requete de type nom commune
 
             let activitesLibellesSet = new Set();
