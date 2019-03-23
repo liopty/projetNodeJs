@@ -9,8 +9,6 @@ const installationController = new InstallationController();
 /**
  * Installation Entity routes
  */
-
-
 router.get('/', function (req, res) {
     installationController.findAll(res);
 });
