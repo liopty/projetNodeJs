@@ -1,5 +1,6 @@
 "use strict";
 
+// Urls utilisés pour interagir avec le service restfull
 const urlCodePostalTous = 'http://localhost:3000/api/installation/';
 const urlActiviteCodePostal = 'http://localhost:3000/api/activite/code_postal/';
 const urlActiviteNomCommune = 'http://localhost:3000/api/activite/nom_de_la_commune/';
@@ -107,7 +108,6 @@ class NotreModele {
 
     /**
      * Recupere les noms de commune
-     * @return {this}
      */
     getNomsCommunes() {
         return [...new Set(this.installations.map(element => element.nomDeLaCommune))].sort();
@@ -161,7 +161,6 @@ class NotreModele {
 
     /**
      * Retourne les noms usuels
-     * @return {this}
      */
     getNomsUsuels() {
         return [...new Set(this.nomsUsuels)].sort();
@@ -171,9 +170,8 @@ class NotreModele {
 
 const notreModele = new NotreModele();
 
-//notreModele.selectCodePostal("44460").then(() => console.log(notreModele.getActivitesLibelles()));
 const app = new Vue({
-    el: '#app',
+    el: '.app',
     data() {
         return {
             // Code postal
@@ -220,6 +218,7 @@ const app = new Vue({
             }, 10);
 
         },
+
         /*
          * Quand le nom de commune change, on met a jour les activités libelles
          */
