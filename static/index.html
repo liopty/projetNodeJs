@@ -109,87 +109,88 @@
                                 <h1 class="row mx-auto"> Filtres </h1>
                                 <!--Liste des filtres avec des collapse-->
 
-                                <!-- Filtre nomActivite -->
-                                <button class="btn btn-primary" data-toggle="collapse" href="#nomActiviteForm"
-                                        role="button"
-                                        aria-expanded="false" aria-controls="nomActiviteForm">
-                                    noms des activités
-                                </button>
-                                <div class="row mx-auto collapse multi-collapse" id="nomActiviteForm">
-                                    <ul>
-                                        <li v-for="activiteLibelle in activitesLibelles">
-                                            <label v-bind:for="activiteLibelle">{{activiteLibelle}}</label>
-                                            <input v-model=activiteLibelleChecked v-bind:value=activiteLibelle
-                                                   v-bind:id=activiteLibelle
-                                                   type="checkbox" @click="activiteLibelleChanged">
-                                        </li>
-                                    </ul>
-
-                                </div>
-
-                            </div>
-
-                            <!-- Le résultat de la requete-->
-                            <div class="col-6">
-                                <h1 class="row mx-auto"> Noms installations </h1>
+                           <!-- Filtre nomActivite -->
+                            <button class="btn btn-primary" data-toggle="collapse" href="#nomActiviteForm" role="button"
+                                    aria-expanded="false" aria-controls="nomActiviteForm">
+                                noms des activités
+                            </button>
+                            <div class="row mx-auto collapse multi-collapse" id="nomActiviteForm">
                                 <ul>
-                                    <li class="row" v-for="nomInstallation in nomsUsuelsInstallations"
-                                        v-on:click="">
-                                        {{nomInstallation}}
+                                    <li v-for="activiteLibelle in activitesLibelles">
+                                        <label v-bind:for="activiteLibelle">{{activiteLibelle}}</label>
+                                        <input v-model=activitesLibellesChecked v-bind:value=activiteLibelle v-bind:id=activiteLibelle
+                                               type="checkbox" @click="activiteLibelleChanged">
                                     </li>
                                 </ul>
-                            </div>
 
-                            <div class="col-3">
-                                <h1 class="row">Communes</h1>
-                                <!--<ul>
-                                    <li class="row" v-for="nCommune in nsCommunes">
-                                        {{nCommune}}
-                                    </li>
-                                </ul>!-->
                             </div>
 
                         </div>
 
-                    </div>
-                    <div class="tab-pane" id="equipement" role="tabpanel" aria-labelledby="equipement-tab">
+                        <!-- Le résultat de la requete-->
+                        <div class="col-6">
+                            <h1 class="row mx-auto"> Noms installations </h1>
+                            <ul>
+                                <li class="row" v-for="nomInstallation in nomsUsuelsInstallations"
+                                    v-on:click="selectInstall(nomInstallation)">
+                                    {{nomInstallation}}
+                                </li>
+                            </ul>
+                        </div>
 
-
-                        <div class="row">
-                            <!-- Les filtres a appliquer -->
-                            <div class="col-3">
-                                <h1 class="row mx-auto"> Filtres </h1>
-                                <!--Liste des filtres avec des collapse-->
-
-
-                            </div>
-
-                            <!-- Le résultat de la requete-->
-                            <div class="col-6">
-                                <h1 class="row mx-auto"> Résultat </h1>
-                                <ul>
-                                    <li class="row" v-for="activiteLibelle in activitesLibelles"
-                                        v-on:click="selectActivite(activiteLibelle)">
-                                        {{activiteLibelle}}
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="col-3">
-                                <h1 class="row">Info</h1>
-                                <ul>
-                                    <li class="row" v-for="nomUsuelInstallation in nomsUsuelsInstallations">
-                                        {{nomUsuelInstallation}}
-                                    </li>
-                                </ul>
-                            </div>
-
+                        <div class="col-3">
+                            <h1 class="row">Communes</h1>
+                            <ul>
+                                <li class="row" v-for="nCommune in nomsCommunes">
+                                    {{nCommune}}
+                                </li>
+                            </ul>
                         </div>
 
                     </div>
+
+                </div>
+                <div class="tab-pane" id="equipement" role="tabpanel" aria-labelledby="equipement-tab">
+
+
+                    <div class="row">
+                        <!-- Les filtres a appliquer -->
+                        <div class="col-3">
+                            <h1 class="row mx-auto"> Filtres </h1>
+                            <!--Liste des filtres avec des collapse-->
+
+
+
+                        </div>
+
+                        <!-- Le résultat de la requete-->
+                        <div class="col-6">
+                            <h1 class="row mx-auto"> Résultat </h1>
+                            <ul>
+                                <li class="row" v-for="activiteLibelle in activitesLibelles"
+                                    v-on:click="selectActivite(activiteLibelle)">
+                                    {{activiteLibelle}}
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="col-3">
+                            <h1 class="row">Info</h1>
+                            <ul>
+                                <li class="row" v-for="nomUsuelInstallation in nomsUsuelsInstallations">
+                                    {{nomUsuelInstallation}}
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+
                 </div>
             </div>
+            </div>
         </div>
+
+
 
 
     </div>

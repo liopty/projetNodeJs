@@ -2,9 +2,11 @@
 
 // Urls utilisés pour interagir avec le service restfull
 const urlCodePostalTous = 'http://localhost:3000/api/installation/';
+const urlActiviteToutes = 'http://localhost:3000/api/activite/';
 const urlActiviteCodePostal = 'http://localhost:3000/api/activite/code_postal/';
 const urlActiviteNomCommune = 'http://localhost:3000/api/activite/nom_de_la_commune/';
 const urlInstallationActiviteLibelle = 'http://localhost:3000/api/installation/activite_libelle/';
+const urlActiviteActiLib = 'http://localhost:3000/api/activite/activite_libelle/';
 
 
 /**
@@ -166,10 +168,50 @@ class NotreModele {
         return [...new Set(this.nomsUsuels)].sort();
     }
 
+    getActivite(){
+        return new Promise((resolve, reject) => {
+            fetch(urlActiviteToutes).then((response) => {
+                return response.json(); // On transforme le résultat en format JSON
+            })
+                .then((data) => {
+                    this.activites = data; // On remplit activites par les données récupérée
+                    resolve(this.activites)
+                })
+                .catch(() => {
+                    this.activites = [];
+                    reject(this.activites);
+                });
+        });
+    }
+
+    getNomsCommunesByNomInstall(install){
+        let communes = this.activites.filter(activite => activite.equipement.installation.nomUsuelDeLInstallation === install).map(element => element.equipement.installation.nomDeLaCommune);
+        communes = [...new Set(communes)].sort();
+        return communes;
+    }
+  getActivitebyActivLib(actiLib) {
+
+        return new Promise((resolve, reject) => {
+            fetch(urlActiviteActiLib + "?activite_libelle=" + actiLib).then((response) => {
+
+                return response.json();
+            })
+                .then((data) => {
+                    this.activites = data;
+                    resolve(this.activites);
+                })
+                .catch(() => {
+                    this.activites = [];
+                    this.activiteSelectionnee = null;
+                    reject(this.activites);
+                });
+        });
+    }
 }
 
 const notreModele = new NotreModele();
 
+//notreModele.selectCodePostal("44460").then(() => console.log(notreModele.getActivitesLibelles()));
 const app = new Vue({
     el: '.app',
     data() {
@@ -257,8 +299,6 @@ const app = new Vue({
                             this.nomsUsuelsInstallations.push(...notreModele.getNomUsuelInstallationByActiviteLibelle(activiteLibelle));
                         });
                 });
-                console.log(this.nomsUsuelsInstallations);
-
             } else if (this.typeRequete === typeRequeteEnum.NOM_COMMUNE) {
                 this.nomsCommuneChecked.forEach((nomCommune) => {
                     notreModele.selectActivitesLibelles(activiteLibelle, nomCommune) // On pourrait utiliser getNomUsuelInstallationByActiviteLibelle(activiteLibelle) mais nous voulions tester les req.query
@@ -270,5 +310,66 @@ const app = new Vue({
                 console.log("ERREUR", "Pas de type de requete enum", "Dans index-site.js, app -> methods -> selectActivite")
             }
         }
+    }
+});
+
+const app2 = new Vue({
+    el: '.app2',
+    data() {
+        return {
+            activites: [],
+            activitesLibelles: [],
+            nomsUsuelsInstallations: [],
+            nomsCommunes: [],
+            activitesLibellesChecked: []
+        }
+    },
+
+    // Fonction appelée une fois l'instance crée
+    created() {
+        notreModele.getActivite()
+            .then(() => this.activitesLibelles = notreModele.getActivitesLibelles())
+
+    },
+
+    methods: {
+        /*
+        * Si une case est cochée ou décochée, on ajoute ou retire l'activité du tableau des case cochées
+        */
+        activiteLibelleChanged: function () {
+            this.nomsUsuelsInstallations = [];
+            this.nomsCommunes = []; // On vide les noms usuels
+            let nomsUsuelsInstallationsSet = new Set();
+
+                setTimeout(() => {
+                    this.activitesLibellesChecked.forEach((activiteLibelle) => {
+                        notreModele.getActivitebyActivLib(activiteLibelle)
+                            .then(() => notreModele.getNomUsuelInstallationByActiviteLibelle(activiteLibelle)
+                                .forEach((installation) => {
+                                    nomsUsuelsInstallationsSet.add(installation);
+                                }))
+                            .then(() => this.nomsUsuelsInstallations = Array.from(nomsUsuelsInstallationsSet));
+                    })
+                }, 10);
+
+
+        },
+
+        selectInstall: function(nomInstallation) {
+            this.nomsCommunes = []; // On vide les noms usuels
+            let nomsCommunessSet = new Set();
+            this.activitesLibellesChecked.forEach((actiLib) => {
+                notreModele.getActivitebyActivLib(actiLib)
+                    .then(() => {
+                        nomsCommunessSet.add(...notreModele.getNomsCommunesByNomInstall(nomInstallation));
+                    })
+                    .then(()=> {
+                        this.nomsCommunes = Array.from(nomsCommunessSet);
+                    });
+            });
+
+        },
+
+
     }
 });
