@@ -23,10 +23,11 @@
                         <a class="nav-link" id="installations-tab" data-toggle="tab" href="#installations" role="tab"
                            aria-controls="installations" aria-selected="false">Installations</a>
                     </li>
+                    <!--
                     <li class="nav-item">
                         <a class="nav-link" id="equipement-tab" data-toggle="tab" href="#equipement" role="tab"
                            aria-controls="equipement" aria-selected="false">Equipements</a>
-                    </li>
+                    </li>-->
                 </ul>
 
                 <!-- Tab panes -->
@@ -112,7 +113,7 @@
                            <!-- Filtre nomActivite -->
                             <button class="btn btn-primary" data-toggle="collapse" href="#nomActiviteForm" role="button"
                                     aria-expanded="false" aria-controls="nomActiviteForm">
-                                noms des activités
+                                Noms des Activités
                             </button>
                             <div class="row mx-auto collapse multi-collapse" id="nomActiviteForm">
                                 <ul>
@@ -130,18 +131,18 @@
                         <!-- Le résultat de la requete-->
                         <div class="col-6">
                             <h1 class="row mx-auto"> Noms installations </h1>
-                            <ul>
-                                <li class="row" v-for="nomInstallation in nomsUsuelsInstallations"
+                            <ul class="list-group">
+                                <button class="list-group-item list-group-item-action" v-for="nomInstallation in nomsUsuelsInstallations"
                                     v-on:click="selectInstall(nomInstallation)">
                                     {{nomInstallation}}
-                                </li>
+                                </button>
                             </ul>
                         </div>
 
                         <div class="col-3">
                             <h1 class="row">Communes</h1>
-                            <ul>
-                                <li class="row" v-for="nCommune in nomsCommunes">
+                            <ul class="list-group">
+                                <li class="list-group-item" v-for="nCommune in nomsCommunes">
                                     {{nCommune}}
                                 </li>
                             </ul>

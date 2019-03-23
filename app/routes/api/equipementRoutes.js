@@ -11,7 +11,7 @@ const equipementController = new EquipementController();
  */
 
 
-//Les  équipements associé à une installation
+//Les  équipements associés à une installation
 router.get('/installation/:no_de_l_installation', function (req, res) {
     equipementController.findByNoDeLInstallation(req,res);
 });
