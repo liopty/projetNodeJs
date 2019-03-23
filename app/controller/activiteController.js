@@ -37,6 +37,13 @@ class ActiviteController {
             .then(this.common.findSuccess(res))
             .catch(this.common.findError(res));
     }
+
+    findByActiviteLibelle(req, res) {
+        const actiLib  = req.query.activite_libelle;
+        this.activiteDao.findByActiLib(actiLib)
+            .then(this.common.findSuccess(res))
+            .catch(this.common.findError(res));
+    }
 }
 
 module.exports = ActiviteController;

@@ -17,6 +17,10 @@ router.get('/code_postal/:code_postal', function (req, res) {
     activiteController.findByCodePostal(req, res);
 });
 
+router.get('/activite_libelle/', function (req, res) {
+    activiteController.findByActiviteLibelle(req, res);
+});
+
 router.get('/', function (req, res) {
     activiteController.findAll(res);
 });
